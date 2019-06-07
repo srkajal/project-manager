@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="taskManager" datatype="html">
+        <source>Task Manager</source>         
+        <target>Task Manager</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/task-list/task-list.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+      </trans-unit>
+      
+      <trans-unit id="taskName" datatype="html">
+        <source>Task:</source>
+        <target>Task:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/task-list/task-list.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="parentTaskName" datatype="html">
+        <source>Parent Task:</source>
+        <target>Parent Task:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/task-list/task-list.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="prirotyFrom" datatype="html">
+        <source>Priroty From:</source>
+        <target>Priroty From:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/task-list/task-list.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="prirotyTo" datatype="html">
+        <source>Priority To:</source>
+        <target>Priority To:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/task-list/task-list.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="startDate" datatype="html">
+        <source>Start Date:</source>
+        <target>Start Date:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/task-list/task-list.component.html</context>
+          <context context-type="linenumber">47</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="endDate" datatype="html">
+        <source>End Date:</source>
+        <target>End Date:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/task-list/task-list.component.html</context>
+          <context context-type="linenumber">59</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="taskName2" datatype="html">
+        <source>Task</source>
+        <target>Task</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/task-list/task-list.component.html</context>
+          <context context-type="linenumber">82</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="parentTaskName2" datatype="html">
+        <source>Parent</source>
+        <target>Parent</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/task-list/task-list.component.html</context>
+          <context context-type="linenumber">85</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="priority2" datatype="html">
+        <source>Priority</source>
+        <target>Priority</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/task-list/task-list.component.html</context>
+          <context context-type="linenumber">88</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="start" datatype="html">
+        <source>Start</source>
+        <target>Start</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/task-list/task-list.component.html</context>
+          <context context-type="linenumber">91</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="end" datatype="html">
+        <source>End</source>
+        <target>End</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/task-list/task-list.component.html</context>
+          <context context-type="linenumber">94</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="taskName3" datatype="html">
+        <source>Task:</source>
+        <target>Task:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/task-add/task-add.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="priority3" datatype="html">
+        <source>Priority</source>
+        <target>Priority</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/task-add/task-add.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="parentTask3" datatype="html">
+        <source>Parent Task:</source>
+        <target>Parent Task:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/task-add/task-add.component.html</context>
+          <context context-type="linenumber">39</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="startDate3" datatype="html">
+        <source>Start Date:</source>
+        <target>Start Date:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/task-add/task-add.component.html</context>
+          <context context-type="linenumber">50</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="endDate3" datatype="html">
+        <source>End Date:</source>
+        <target>End Date:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/task-add/task-add.component.html</context>
+          <context context-type="linenumber">61</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="addTask" datatype="html">
+        <source>Add Task</source>
+        <target>Add Task</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/task-add/task-add.component.html</context>
+          <context context-type="linenumber">73</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="rest" datatype="html">
+        <source>Reset</source>
+        <target>Reset</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/task-add/task-add.component.html</context>
+          <context context-type="linenumber">76</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="taskName4" datatype="html">
+        <source>Task:</source>
+        <target>Task:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/task-edit/task-edit.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="priority4" datatype="html">
+        <source>Priority</source>
+        <target>Priority</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/task-edit/task-edit.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="parentTask4" datatype="html">
+        <source>Parent Task:</source>
+        <target>Parent Task:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/task-edit/task-edit.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="startDate4" datatype="html">
+        <source>Start Date:</source>
+        <target>Start Date:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/task-edit/task-edit.component.html</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="endDate4" datatype="html">
+        <source>End Date:</source>
+        <target>End Date:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/task-edit/task-edit.component.html</context>
+          <context context-type="linenumber">62</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="updateTask" datatype="html">
+        <source>Update Task</source>
+        <target>Update Task</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/task-edit/task-edit.component.html</context>
+          <context context-type="linenumber">74</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cancel" datatype="html">
+        <source>Cancel</source>
+        <target>Cancel</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/task-edit/task-edit.component.html</context>
+          <context context-type="linenumber">77</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

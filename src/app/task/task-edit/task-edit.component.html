@@ -1,0 +1,97 @@
+<div class="container">
+  <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+    <input type="hidden" formControlName="task_id" id="task_id" value="" name="task_id">
+    <div class="row">
+      <div class="col-md-2">
+        <label for="taskName" class="mb-2 mr-sm-1" i18n="@@taskName4">Task:</label>
+      </div>
+      <div class="col-md-6">
+        <input type="text" formControlName="task_name" class="form-control mb-2 mr-sm-2" id="taskName" placeholder="Enter task" name="taskName"
+          [ngClass]="{ 'is-invalid': submitted && formField.task_name.errors }">
+        <div *ngIf="submitted && formField.task_name.errors" class="invalid-feedback">
+          <div *ngIf="formField.task_name.errors.required">Task Name is required</div>
+        </div>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-1">0</div>
+      <div class="col-md-4"></div>
+      <div class="col-md-1">
+        <div class="row">
+          <div class="col-md-6"></div>
+          <div class="col-md-6">30</div>
+        </div>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2">
+        <label for="priority" i18n="@@priority4">Priority</label>
+      </div>
+      <div class="col-md-6">
+        <input type="range" formControlName="priority" class="custom-range" id="priority" name="priority" min="1" max="30" value="15">
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2">
+        <label for="parent_id" class="mb-2 mr-sm-1" i18n="@@parentTask4">Parent Task:</label>
+      </div>
+      <div class="col-md-6">
+        <select id="parent_id" formControlName="parent_id" class="form-control">
+          <option *ngFor="let parentTask of parentTaskList" [value]="parentTask.parent_id">
+            {{parentTask.parent_task_name}}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2">
+        <label for="start_date" class="mb-2 mr-sm-1" i18n="@@startDate4">Start Date:</label>
+      </div>
+      <div class="col-md-6">
+        <input type="date" formControlName="start_date" class="form-control mb-2 mr-sm-2" id="start_date" placeholder="Enter Start Date"
+          name="start_date" [ngClass]="{ 'is-invalid': submitted && formField.start_date.errors }">
+
+        <div *ngIf="submitted && formField.start_date.errors" class="invalid-feedback">
+          <div *ngIf="formField.start_date.errors.required">Start dateis required</div>
+        </div>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2">
+        <label for="end_date" class="mb-2 mr-sm-1" i18n="@@endDate4">End Date:</label>
+      </div>
+      <div class="col-md-6">
+        <input type="date" formControlName="end_date" class="form-control mb-2 mr-sm-2" id="end_date" placeholder="Enter End Date"
+          name="end_date" [ngClass]="{ 'is-invalid': submitted && formField.end_date.errors }">
+
+        <div *ngIf="submitted && formField.end_date.errors" class="invalid-feedback">
+          <div *ngIf="formField.end_date.errors.required">End dateis required</div>
+        </div>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <button class="btn btn-secondary" i18n="@@updateTask">Update Task</button>
+      </div>
+      <div class="col-md-2">
+        <button type="button" (click)="cancel()" class="btn btn-secondary" i18n="@@cancel">Cancel</button>
+      </div>
+      <div class="col-md-6"></div>
+    </div>
+
+  </form>
+</div>
