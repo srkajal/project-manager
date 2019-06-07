@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-import { TaskRequest } from './model/task-request.model';
-import { AppConfig } from './app.config';
+import { TaskRequest } from '../model/task-request.model';
+import { AppConfig } from '../app.config';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ApiService {
+export class ApiTaskService {
 
   _baseUrl: string;
 

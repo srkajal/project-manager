@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiService } from '../../api.service';
+import { ApiTaskService } from '../../service/api.task-service';
 import { Task } from '../../model/task.model';
 import { TaskFilter } from '../../model/task-filter.model';
 
@@ -13,21 +13,21 @@ export class TaskListComponent implements OnInit {
   taskList: Array<Task> = [];
   filter: TaskFilter = new TaskFilter();
   
-  constructor(private apiService: ApiService, private router: Router) { }
+  constructor(private ApiTaskService: ApiTaskService, private router: Router) { }
 
   ngOnInit() {
     this.getAllTasks();
   }
 
   getAllTasks(){
-    this.apiService.getAllTasks().subscribe((data: any)=>
+    this.ApiTaskService.getAllTasks().subscribe((data: any)=>
     {
       this.taskList = data.tasks;
     });
   }
 
   endTask(taskId: number){
-    this.apiService
+    this.ApiTaskService
     .endTask(taskId)
     .subscribe((data: any)=>{
       this.taskList.forEach((t:Task)=>{

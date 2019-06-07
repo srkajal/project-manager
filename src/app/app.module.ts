@@ -9,6 +9,10 @@ import { TaskListComponent } from './task/task-list/task-list.component';
 import { TaskAddComponent } from './task/task-add/task-add.component';
 import { TaskEditComponent } from './task/task-edit/task-edit.component';
 import { TaskFilterPipe } from './shared/task-filter.pipe';
+import { UserComponent } from './user/user.component';
+import { SortByPipe } from './shared/sort-by.pipe';
+import { SearchFilterPipe } from './shared/search-filter.pipe';
+import { ProjectComponent } from './project/project.component'
 
 @NgModule({
   declarations: [
@@ -16,7 +20,11 @@ import { TaskFilterPipe } from './shared/task-filter.pipe';
     TaskListComponent,
     TaskAddComponent,
     TaskEditComponent,
-    TaskFilterPipe
+    TaskFilterPipe,
+    UserComponent,
+    SortByPipe,
+    SearchFilterPipe,
+    ProjectComponent
   ],
   imports: [
     BrowserModule,

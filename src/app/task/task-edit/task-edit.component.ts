@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ApiService } from '../../api.service';
+import { ApiTaskService } from '../../service/api.task-service';
 import { Router } from '@angular/router';
 import { Task } from '../../model/task.model';
 import { TaskRequest } from '../../model/task-request.model';
@@ -13,7 +13,7 @@ import { ParentTask } from '../../model/parent-task.model';
 })
 export class TaskEditComponent implements OnInit {
 
-  constructor(private apiService: ApiService, private formBuilder: FormBuilder, private router: Router) { }
+  constructor(private ApiTaskService: ApiTaskService, private formBuilder: FormBuilder, private router: Router) { }
 
   editForm: FormGroup;
   defaultPrirority: number = 15;
@@ -33,7 +33,7 @@ export class TaskEditComponent implements OnInit {
 
     this.getParentTaskList();
 
-    this.apiService.getTaskById(Number(editTaskId)).subscribe((data: any) => {
+    this.ApiTaskService.getTaskById(Number(editTaskId)).subscribe((data: any) => {
       this.editTask = data.task;
       
       this.taksRequest.task_id = this.editTask.task_id;
@@ -72,7 +72,7 @@ export class TaskEditComponent implements OnInit {
       return;
     }
     
-    this.apiService.updateTask(this.editForm.value).subscribe(response => this.router.navigate(['tasks']));
+    this.ApiTaskService.updateTask(this.editForm.value).subscribe(response => this.router.navigate(['tasks']));
   }
 
   cancel(){
@@ -80,7 +80,7 @@ export class TaskEditComponent implements OnInit {
   }
 
   getParentTaskList() {
-    this.apiService.getAllParentTasks().subscribe((data: any) => {
+    this.ApiTaskService.getAllParentTasks().subscribe((data: any) => {
       this.parentTaskList = data.parent_tasks;
       this.parentTaskList.splice(0,0,new ParentTask(0,"Select a parent"));
     });

@@ -3,6 +3,7 @@ export class AppConfig{
         return "http://localhost:8686"
     }
 
+    //Task url
     public static get findAllTaskUrl(): string{
         return "/api/task/findAllTasks"
     }
@@ -25,5 +26,26 @@ export class AppConfig{
 
     public static get findTaskByIdUrl(): string{
         return "/api/task/findTaskById/"
+    }
+
+    //User url
+    public static get findAllUserUrl(): string{
+        return "/api/user/findAllUsers"
+    }
+
+    public static get addUserUrl(): string{
+        return "/api/user/createUser"
+    }
+
+    public static get findUserByIdUrl(): string{
+        return "/api/user/findUserById/"
+    }
+
+    public static get deleteUserByIdUrl(): string{
+        return "/api/user/delete/"
+    }
+
+    public static get updateUserUrl(): string{
+        return "/api/user/updateUser"
     }
 }
