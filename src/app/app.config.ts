@@ -29,6 +29,10 @@ export class AppConfig{
     }
 
     //User url
+    public static get findUsersWithNoProjectUrl(): string{
+        return "/api/user/findUsersWithNoProject"
+    }
+
     public static get findAllUserUrl(): string{
         return "/api/user/findAllUsers"
     }
@@ -48,4 +52,30 @@ export class AppConfig{
     public static get updateUserUrl(): string{
         return "/api/user/updateUser"
     }
+
+    //Project url
+    public static get findAllProjecstUrl(): string{
+        return "/api/project/findAllProjects"
+    }
+
+    public static get addProjectUrl(): string{
+        return "/api/project/createProject"
+    }
+
+    public static get findProjectByIdUrl(): string{
+        return "/api/project/findProjectById/"
+    }
+
+    public static get updateProjectUrl(): string{
+        return "/api/project/updateProject"
+    }
+
+    public static get suspendProjectByIdUrl(): string{
+        return "/api/project/suspendProject/"
+    }
+
+    public static get activateProjectByIdUrl(): string{
+        return "/api/project/activateProject/"
+    }
+    
 }

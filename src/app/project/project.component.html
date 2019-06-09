@@ -1,3 +1,262 @@
-<p>
-  project works!
-</p>
+<div class="container">
+  <div>
+    <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+      <input type="hidden" formControlName="project_id" id="projectId" value="" name="projectId">
+
+      <div class="row">
+        <div class="col-md-2">
+          <label for="projectName" class="mb-2 mr-sm-1" i18n="@@projectName3">Project Name:</label>
+        </div>
+        <div class="col-md-7">
+          <input type="text" formControlName="project_name" class="form-control mb-2 mr-sm-2" id="projectName"
+            placeholder="Enter Project Name" name="projectName"
+            [ngClass]="{ 'is-invalid': submitted && formField.project_name.errors }">
+          <div *ngIf="submitted && formField.project_name.errors" class="invalid-feedback">
+            <div *ngIf="formField.project_name.errors.required">Project name is required</div>
+          </div>
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-check">
+            <label class="form-check-label">
+              <input type="checkbox" class="form-check-input" [(ngModel)]="checkboxValue" [checked]="checkboxValue"
+                [ngModelOptions]="{standalone: true}" (change)="setStartAndEndDate()" name="setStartEndDate"
+                id="setStartEndDate">Set Start and End Date
+            </label>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <input type="date" formControlName="start_date" class="form-control mb-2 mr-sm-2" id="start_date"
+            placeholder="Start Date" name="start_date"
+            [ngClass]="{ 'is-invalid': submitted && formField.start_date.errors }">
+          <div *ngIf="submitted && formField.start_date.errors" class="invalid-feedback">
+            <div *ngIf="formField.start_date.errors.required">Start dateis required</div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <input type="date" formControlName="end_date" class="form-control mb-2 mr-sm-2" id="end_date"
+            placeholder="End Date" name="end_date" [ngClass]="{ 'is-invalid': submitted && formField.end_date.errors }">
+          <div *ngIf="submitted && formField.end_date.errors" class="invalid-feedback">
+            <div *ngIf="formField.end_date.errors.required">End dateis required</div>
+          </div>
+        </div>
+
+        <div class="col-md-3"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-1">0</div>
+        <div class="col-md-5"></div>
+        <div class="col-md-1">
+          <div class="row">
+            <div class="col-md-6"></div>
+            <div class="col-md-6">30</div>
+          </div>
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-2">
+          <label for="priority" i18n="@@priority3">Priority</label>
+        </div>
+        <div class="col-md-7">
+          <input type="range" formControlName="priority" class="custom-range" id="priority" name="priority" min="1"
+            max="30" value="15">
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-2">
+          <label for="projectId" i18n="@@project_id3">Manager:</label>
+        </div>
+        <div class="col-md-3">
+          <input type="number" formControlName="user_id" class="form-control mb-2 mr-sm-2" id="managerName"
+            placeholder="Enter Manager name" name="managerName"
+            [ngClass]="{ 'is-invalid': submitted && formField.user_id.errors }">
+          <div *ngIf="submitted && formField.user_id.errors" class="invalid-feedback">
+            <div *ngIf="formField.user_id.errors.required">Manager name is required</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <button type="button" class="btn btn-secondary rounded-circle" (click)="open(content)"
+            i18n="@@addTask">Search</button>
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+      <br />
+
+      <div class="row">
+        <div class="col text-danger" *ngIf="isErrorFound">
+          {{errorMessage}}
+        </div>
+      </div>
+      <br />
+      <div class="row">
+        <div class="col-md-7"></div>
+        <div class="col-md-1">
+          <div *ngIf="!isEditProject">
+            <button type="submit" class="btn btn-secondary" i18n="@@addTask">Add</button>
+          </div>
+          <div *ngIf="isEditProject">
+            <button type="submit" class="btn btn-secondary" i18n="@@addTask">Update</button>
+          </div>
+
+        </div>
+        <div class="col-md-2">
+          <button type="button" (click)="resetProject()" class="btn btn-secondary" i18n="@@rest">Reset</button>
+        </div>
+        <div class="col-md-2"></div>
+      </div>
+    </form>
+  </div>
+
+  <div>
+    <ng-template #content let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">User</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="dateOfBirth">Select Manager</label>
+            <div class="input-group">
+              <div *ngFor="let user of userList">
+                <br />
+                <input name="options" type="radio" [(ngModel)]="manager" [ngModelOptions]="{standalone: true}"
+                  value="{{user.user_id}}" (change)="modal.close(user)" /> {{user.first_name}} {{user.last_name}}
+                <br />
+              </div>
+
+            </div>
+          </div>
+        </form>
+      </div>
+    </ng-template>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <span layout="row">
+        <hr flex />
+        <hr flex /></span>
+    </div>
+  </div>
+
+  <div>
+    <form>
+      <div class="row">
+        <div class="col-md-2">
+          <input type="text" class="form-control mb-2 mr-sm-2" id="searchValue" placeholder="Search..."
+            [(ngModel)]="searchFilter.project_name" name="searchValue">
+        </div>
+        <div class="col-md-1">
+          <label i18n="@@project_id3">Sort By:</label>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-3">
+              <button type="submit" (click)="sort('start_date')" class="btn btn-secondary" i18n="@@addTask">Start
+                Date</button>
+            </div>
+            <div class="col-md-3">
+              <button type="submit" (click)="sort('end_date')" class="btn btn-secondary" i18n="@@addTask">End
+                Date</button>
+            </div>
+            <div class="col-md-3">
+              <button type="submit" (click)="sort('priority')" class="btn btn-secondary"
+                i18n="@@addTask">Priority</button>
+            </div>
+            <div class="col-md-3">
+              <button type="submit" (click)="sort('no_of_tasks_completed')" class="btn btn-secondary"
+                i18n="@@addTask">Completed</button>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+    </form>
+  </div>
+
+  <div *ngFor="let project of projectList | sortBy:sortingName:isDesc | searchFilter: searchFilter">
+    <div class="row">
+      <div class="col">
+        <span layout="row">
+          <hr flex /></span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2">Project:</div>
+      <div class="col-md-6">
+        <div class="rounded bg-light text-dark">{{project.project_name}}</div>
+      </div>
+      <div class="col-md-1">Priority</div>
+      <div class="col-md-1">
+        <button type="submit" (click)="editProject(project.project_id)" class="btn btn-secondary"
+          i18n="@@addTask">Edit</button>
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2">No of Tasks:</div>
+      <div class="col-md-2">
+        <div class="rounded bg-light text-dark">{{project.no_of_tasks}}</div>
+      </div>
+      <div class="col-md-2">Completed:</div>
+      <div class="col-md-2">
+        <div class="rounded bg-light text-dark">{{project.no_of_tasks_completed}}</div>
+      </div>
+      <div class="col-md-1">
+        <div class="rounded bg-light text-dark">{{project.priority}}</div>
+      </div>
+      <div class="col-md-1">
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2">Start Date:</div>
+      <div class="col-md-2">
+        <div class="rounded bg-light text-dark">{{project.start_date | date: 'MMM d, y'}}</div>
+      </div>
+      <div class="col-md-2">End Date:</div>
+      <div class="col-md-2">
+        <div class="rounded bg-light text-dark">{{project.end_date | date: 'MMM d, y'}}</div>
+      </div>
+      <div class="col-md-1">
+        <div class="rounded bg-light text-dark"> </div>
+      </div>
+      <div class="col-md-1">
+        <div *ngIf="project.status=='ACTIVE'">
+          <button type="submit" (click)="suspendProject(project.project_id)" class="btn btn-secondary"
+            i18n="@@addTask">Suspend</button>
+        </div>
+
+        <div *ngIf="project.status=='SUSPENDED'">
+          <button type="submit" (click)="activeProject(project.project_id)" class="btn btn-secondary"
+            i18n="@@addTask">Active</button>
+        </div>
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <span layout="row">
+          <hr flex /></span>
+      </div>
+    </div>
+  </div>
+</div>

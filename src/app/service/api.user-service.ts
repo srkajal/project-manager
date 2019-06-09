@@ -19,6 +19,11 @@ export class ApiUserService {
             .pipe(map((response: any) => response.users));
     }
 
+    getAllUsersWithNoProject() {
+        return this.httpClient.get<Array<User>>(this._baseUrl + AppConfig.findUsersWithNoProjectUrl)
+            .pipe(map((response: any) => response.users));
+    }
+
     addUser(userRequest: UserRequest) {
         return this.httpClient.post(this._baseUrl + AppConfig.addUserUrl, userRequest);
     }

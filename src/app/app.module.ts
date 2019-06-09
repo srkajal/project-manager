@@ -12,7 +12,8 @@ import { TaskFilterPipe } from './shared/task-filter.pipe';
 import { UserComponent } from './user/user.component';
 import { SortByPipe } from './shared/sort-by.pipe';
 import { SearchFilterPipe } from './shared/search-filter.pipe';
-import { ProjectComponent } from './project/project.component'
+import { ProjectComponent } from './project/project.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ProjectComponent } from './project/project.component'
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgbModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

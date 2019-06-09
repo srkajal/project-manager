@@ -16,8 +16,6 @@ export class UserComponent implements OnInit {
 
   userList: Array<User> = [];
   searchFilter: SearchFilter = new SearchFilter();
-  constructor(private apiUserService: ApiUserService, private formBuilder: FormBuilder, private router: Router) { }
-
   addForm: FormGroup;
   existingUser: User;
   userRequest: UserRequest = new UserRequest();
@@ -25,6 +23,8 @@ export class UserComponent implements OnInit {
   isEditUser = false;
   sortingName: string;
   isDesc: boolean;
+
+  constructor(private apiUserService: ApiUserService, private formBuilder: FormBuilder, private router: Router) { }
 
   ngOnInit() {
 

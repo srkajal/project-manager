@@ -2,10 +2,30 @@
   <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
     <div class="row">
       <div class="col-md-2">
+        <label for="projectId" class="mb-2 mr-sm-1" i18n="@@projectId3">Project</label>
+      </div>
+      <div class="col-md-5">
+        <input type="number" class="form-control mb-2 mr-sm-2" id="project" placeholder="Enter Projec id" name="project"
+          [ngClass]="{ 'is-invalid': submitted && formField.project_id.errors }">
+        <div *ngIf="submitted && formField.project_id.errors" class="invalid-feedback">
+          <div *ngIf="formField.project_id.errors.required">Project id is required</div>
+        </div>
+      </div>
+
+      <div class="col-md-1">
+        <button type="button" class="btn btn-secondary rounded-circle" (click)="open(content)"
+          i18n="@@addTask">Search</button>
+      </div>
+
+      <div class="col-md-4"></div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
         <label for="taskName" class="mb-2 mr-sm-1" i18n="@@taskName3">Task:</label>
       </div>
       <div class="col-md-6">
-        <input type="text" formControlName="task_name" class="form-control mb-2 mr-sm-2" id="taskName" placeholder="Enter task" name="taskName"
+        <input type="text" formControlName="task_name" class="form-control mb-2 mr-sm-2" id="taskName"
+          placeholder="Enter task" name="taskName"
           [ngClass]="{ 'is-invalid': submitted && formField.task_name.errors }">
         <div *ngIf="submitted && formField.task_name.errors" class="invalid-feedback">
           <div *ngIf="formField.task_name.errors.required">Task Name is required</div>
@@ -32,50 +52,86 @@
         <label for="priority" i18n="@@priority3">Priority</label>
       </div>
       <div class="col-md-6">
-        <input type="range" formControlName="priority" class="custom-range" id="priority" name="priority" min="1" max="30" value="15">
+        <input type="range" formControlName="priority" class="custom-range" id="priority" name="priority" min="1"
+          max="30" value="15">
       </div>
       <div class="col-md-4"></div>
     </div>
 
     <div class="row">
       <div class="col-md-2">
-        <label for="parent_id" class="mb-2 mr-sm-1" i18n="@@parentTask3">Parent Task:</label>
+        <label for="parentTaskId" class="mb-2 mr-sm-1" i18n="@@parentTaskId3">Parent Task:</label>
       </div>
-      <div class="col-md-6">
-        <select id="parent_id" formControlName="parent_id" class="form-control" [ngClass]="{ 'is-invalid': submitted && formField.parent_id.errors }">
-          <option *ngFor="let parentTask of parentTaskList" [value]="parentTask.parent_id">
-            {{parentTask.parent_task_name}}
-          </option>
-        </select>
-      </div>
-      <div class="col-md-4"></div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-2">
-        <label for="start_date" class="mb-2 mr-sm-1" i18n="@@startDate3">Start Date:</label>
-      </div>
-      <div class="col-md-6">
-        <input type="date" formControlName="start_date" class="form-control mb-2 mr-sm-2" id="start_date" placeholder="Enter Start Date"
-          name="start_date" [ngClass]="{ 'is-invalid': submitted && formField.start_date.errors }">
-        <div *ngIf="submitted && formField.start_date.errors" class="invalid-feedback">
-          <div *ngIf="formField.start_date.errors.required">Start dateis required</div>
+      <div class="col-md-5">
+        <input type="number" class="form-control mb-2 mr-sm-2" id="parentTask" placeholder="Enter Parent Task id"
+          name="parentTask" [ngClass]="{ 'is-invalid': submitted && formField.parent_task_id.errors }">
+        <div *ngIf="submitted && formField.parent_task_id.errors" class="invalid-feedback">
+          <div *ngIf="formField.parent_task_id.errors.required">Parent Task id is required</div>
         </div>
       </div>
+
+      <div class="col-md-1">
+        <button type="button" class="btn btn-secondary rounded-circle" (click)="open(content)"
+          i18n="@@addTask">Search</button>
+      </div>
+
+      <div class="col-md-4"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="row">
+          <div class="col-md-6">
+            <label for="start_date" class="mb-2 mr-sm-1" i18n="@@startDate3">Start Date:</label>
+          </div>
+          <div class="col-md-6">
+            <input type="date" formControlName="start_date" class="form-control mb-2 mr-sm-2" id="start_date"
+              placeholder="Enter Start Date" name="start_date"
+              [ngClass]="{ 'is-invalid': submitted && formField.start_date.errors }">
+            <div *ngIf="submitted && formField.start_date.errors" class="invalid-feedback">
+              <div *ngIf="formField.start_date.errors.required">Start dateis required</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="row">
+          <div class="col-md-6">
+            <label for="end_date" class="mb-2 mr-sm-1" i18n="@@endDate3">End Date:</label>
+          </div>
+          <div class="col-md-6">
+            <input type="date" formControlName="end_date" class="form-control mb-2 mr-sm-2" id="end_date"
+              placeholder="Enter End Date" name="end_date"
+              [ngClass]="{ 'is-invalid': submitted && formField.end_date.errors }">
+            <div *ngIf="submitted && formField.end_date.errors" class="invalid-feedback">
+              <div *ngIf="formField.end_date.errors.required">End dateis required</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
       <div class="col-md-4"></div>
     </div>
 
     <div class="row">
       <div class="col-md-2">
-        <label for="end_date" class="mb-2 mr-sm-1" i18n="@@endDate3">End Date:</label>
+        <label for="userId" class="mb-2 mr-sm-1" i18n="@@userId3">User:</label>
       </div>
-      <div class="col-md-6">
-        <input type="date" formControlName="end_date" class="form-control mb-2 mr-sm-2" id="end_date" placeholder="Enter End Date"
-          name="end_date" [ngClass]="{ 'is-invalid': submitted && formField.end_date.errors }">
-        <div *ngIf="submitted && formField.end_date.errors" class="invalid-feedback">
-          <div *ngIf="formField.end_date.errors.required">End dateis required</div>
+      <div class="col-md-5">
+        <input type="number" class="form-control mb-2 mr-sm-2" id="userId" placeholder="Enter User id" name="userId"
+          [ngClass]="{ 'is-invalid': submitted && formField.user_id.errors }">
+        <div *ngIf="submitted && formField.user_id.errors" class="invalid-feedback">
+          <div *ngIf="formField.user_id.errors.required">User id is required</div>
         </div>
       </div>
+
+      <div class="col-md-1">
+        <button type="button" class="btn btn-secondary rounded-circle" (click)="open(content)"
+          i18n="@@addTask">Search</button>
+      </div>
+
       <div class="col-md-4"></div>
     </div>
 
