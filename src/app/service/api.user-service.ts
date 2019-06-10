@@ -24,6 +24,11 @@ export class ApiUserService {
             .pipe(map((response: any) => response.users));
     }
 
+    getAllUsersWithNoTask() {
+        return this.httpClient.get<Array<User>>(this._baseUrl + AppConfig.findUsersWithNoTaskUrl)
+            .pipe(map((response: any) => response.users));
+    }
+
     addUser(userRequest: UserRequest) {
         return this.httpClient.post(this._baseUrl + AppConfig.addUserUrl, userRequest);
     }

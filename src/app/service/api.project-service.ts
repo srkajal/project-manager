@@ -19,6 +19,11 @@ export class ApiProjectService {
             .pipe(map((response: any) => response.projects));
     }
 
+    getAllActiveProjects() {
+        return this.httpClient.get<Array<Project>>(this._baseUrl + AppConfig.findAllActiveProjectUrl)
+            .pipe(map((response: any) => response.projects));
+    }
+
     addProject(projectRequest: ProjectRequest) {
         return this.httpClient.post(this._baseUrl + AppConfig.addProjectUrl, projectRequest);
     }

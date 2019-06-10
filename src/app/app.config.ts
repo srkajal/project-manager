@@ -33,6 +33,10 @@ export class AppConfig{
         return "/api/user/findUsersWithNoProject"
     }
 
+    public static get findUsersWithNoTaskUrl(): string{
+        return "/api/user/findUsersWithNoTask"
+    }
+
     public static get findAllUserUrl(): string{
         return "/api/user/findAllUsers"
     }
@@ -56,6 +60,10 @@ export class AppConfig{
     //Project url
     public static get findAllProjecstUrl(): string{
         return "/api/project/findAllProjects"
+    }
+
+    public static get findAllActiveProjectUrl(): string{
+        return "/api/project/findAllActiveProjects"
     }
 
     public static get addProjectUrl(): string{

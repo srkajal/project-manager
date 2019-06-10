@@ -49,12 +49,12 @@ export class ProjectComponent implements OnInit {
     }
 
     this.addForm = this.formBuilder.group({
-      project_id: ['', Validators.min(1)],
+      project_id: ['', Validators.min(0)],
       project_name: ['', Validators.required],
       start_date: ['', Validators.required],
       end_date: ['', Validators.required],
       priority: ['', Validators.min(1)],
-      user_id: ['', Validators.min(1)]
+      user_id: ['', Validators.min(0)]
     });
 
     this.findAllProjects();

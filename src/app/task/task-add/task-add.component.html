@@ -1,150 +1,264 @@
 <div class="container">
-  <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
-    <div class="row">
-      <div class="col-md-2">
-        <label for="projectId" class="mb-2 mr-sm-1" i18n="@@projectId3">Project</label>
-      </div>
-      <div class="col-md-5">
-        <input type="number" class="form-control mb-2 mr-sm-2" id="project" placeholder="Enter Projec id" name="project"
-          [ngClass]="{ 'is-invalid': submitted && formField.project_id.errors }">
-        <div *ngIf="submitted && formField.project_id.errors" class="invalid-feedback">
-          <div *ngIf="formField.project_id.errors.required">Project id is required</div>
+  <div>
+    <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-md-2">
+          <label for="projectId" class="mb-2 mr-sm-1" i18n="@@projectId3">Project</label>
         </div>
-      </div>
-
-      <div class="col-md-1">
-        <button type="button" class="btn btn-secondary rounded-circle" (click)="open(content)"
-          i18n="@@addTask">Search</button>
-      </div>
-
-      <div class="col-md-4"></div>
-    </div>
-    <div class="row">
-      <div class="col-md-2">
-        <label for="taskName" class="mb-2 mr-sm-1" i18n="@@taskName3">Task:</label>
-      </div>
-      <div class="col-md-6">
-        <input type="text" formControlName="task_name" class="form-control mb-2 mr-sm-2" id="taskName"
-          placeholder="Enter task" name="taskName"
-          [ngClass]="{ 'is-invalid': submitted && formField.task_name.errors }">
-        <div *ngIf="submitted && formField.task_name.errors" class="invalid-feedback">
-          <div *ngIf="formField.task_name.errors.required">Task Name is required</div>
-        </div>
-      </div>
-      <div class="col-md-4"></div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-2"></div>
-      <div class="col-md-1">0</div>
-      <div class="col-md-4"></div>
-      <div class="col-md-1">
-        <div class="row">
-          <div class="col-md-6"></div>
-          <div class="col-md-6">30</div>
-        </div>
-      </div>
-      <div class="col-md-4"></div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-2">
-        <label for="priority" i18n="@@priority3">Priority</label>
-      </div>
-      <div class="col-md-6">
-        <input type="range" formControlName="priority" class="custom-range" id="priority" name="priority" min="1"
-          max="30" value="15">
-      </div>
-      <div class="col-md-4"></div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-2">
-        <label for="parentTaskId" class="mb-2 mr-sm-1" i18n="@@parentTaskId3">Parent Task:</label>
-      </div>
-      <div class="col-md-5">
-        <input type="number" class="form-control mb-2 mr-sm-2" id="parentTask" placeholder="Enter Parent Task id"
-          name="parentTask" [ngClass]="{ 'is-invalid': submitted && formField.parent_task_id.errors }">
-        <div *ngIf="submitted && formField.parent_task_id.errors" class="invalid-feedback">
-          <div *ngIf="formField.parent_task_id.errors.required">Parent Task id is required</div>
-        </div>
-      </div>
-
-      <div class="col-md-1">
-        <button type="button" class="btn btn-secondary rounded-circle" (click)="open(content)"
-          i18n="@@addTask">Search</button>
-      </div>
-
-      <div class="col-md-4"></div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-4">
-        <div class="row">
-          <div class="col-md-6">
-            <label for="start_date" class="mb-2 mr-sm-1" i18n="@@startDate3">Start Date:</label>
+        <div class="col-md-5">
+          <input type="number" formControlName="project_id" class="form-control mb-2 mr-sm-2" id="project"
+            placeholder="Enter Projec id" name="project"
+            [ngClass]="{ 'is-invalid': submitted && formField.project_id.errors }">
+          <div *ngIf="submitted && formField.project_id.errors" class="invalid-feedback">
+            <div *ngIf="formField.project_id.errors.required">Project id is required</div>
           </div>
-          <div class="col-md-6">
-            <input type="date" formControlName="start_date" class="form-control mb-2 mr-sm-2" id="start_date"
-              placeholder="Enter Start Date" name="start_date"
-              [ngClass]="{ 'is-invalid': submitted && formField.start_date.errors }">
-            <div *ngIf="submitted && formField.start_date.errors" class="invalid-feedback">
-              <div *ngIf="formField.start_date.errors.required">Start dateis required</div>
+        </div>
+
+        <div class="col-md-1">
+          <button type="button" [disabled]="checkboxValue" class="btn btn-secondary rounded-circle"
+            (click)="open(projectContent)" i18n="@@addTask">Search</button>
+        </div>
+
+        <div class="col-md-4"></div>
+      </div>
+
+      <br />
+
+      <div class="row">
+        <div class="col-md-2">
+          <label for="taskName" class="mb-2 mr-sm-1" i18n="@@taskName3">Task:</label>
+        </div>
+        <div class="col-md-6">
+          <input type="text" formControlName="task_name" class="form-control mb-2 mr-sm-2" id="taskName"
+            placeholder="Enter task" name="taskName"
+            [ngClass]="{ 'is-invalid': submitted && formField.task_name.errors }">
+          <div *ngIf="submitted && formField.task_name.errors" class="invalid-feedback">
+            <div *ngIf="formField.task_name.errors.required">Task Name is required</div>
+          </div>
+        </div>
+        <div class="col-md-4"></div>
+      </div>
+
+      <br />
+
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-1">0</div>
+        <div class="col-md-4"></div>
+        <div class="col-md-1">
+          <div class="row">
+            <div class="col-md-6"></div>
+            <div class="col-md-6">30</div>
+          </div>
+        </div>
+        <div class="col-md-4"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-2">
+          <label for="priority" i18n="@@priority3">Priority</label>
+        </div>
+        <div class="col-md-6">
+          <input type="range" formControlName="priority" class="custom-range" id="priority" name="priority" min="1"
+            max="30" value="15">
+        </div>
+        <div class="col-md-4"></div>
+      </div>
+
+      <br />
+
+      <div class="row">
+        <div class="col-md-2">
+          <label for="parentTaskId" class="mb-2 mr-sm-1" i18n="@@parentTaskId3">Parent Task:</label>
+        </div>
+        <div class="col-md-5">
+          <input type="number" formControlName="parent_id" class="form-control mb-2 mr-sm-2" id="parentTaskId"
+            placeholder="Enter Parent Task id" name="parentTaskId"
+            [ngClass]="{ 'is-invalid': submitted && formField.parent_id.errors }">
+          <div *ngIf="submitted && formField.parent_id.errors" class="invalid-feedback">
+            <div *ngIf="formField.parent_id.errors.required">Parent Task id is required</div>
+          </div>
+        </div>
+
+        <div class="col-md-1">
+          <button type="button" [disabled]="checkboxValue" class="btn btn-secondary rounded-circle"
+            (click)="open(parentContent)" i18n="@@addTask">Search</button>
+        </div>
+
+        <div class="col-md-4"></div>
+      </div>
+
+      <br />
+
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-4">
+          <div class="form-check">
+            <label class="form-check-label">
+              <input type="checkbox" class="form-check-input" [(ngModel)]="checkboxValue" [checked]="checkboxValue"
+                [ngModelOptions]="{standalone: true}" (change)="toggle()" name="checkParentTask"
+                id="checkParentTask">Parent Task
+            </label>
+          </div>
+        </div>
+        <div class="col-md-6"></div>
+      </div>
+
+      <br />
+
+      <div class="row">
+        <div class="col-md-4">
+          <div class="row">
+            <div class="col-md-6">
+              <label for="start_date" class="mb-2 mr-sm-1" i18n="@@startDate3">Start Date:</label>
+            </div>
+            <div class="col-md-6">
+              <input type="date" formControlName="start_date" class="form-control mb-2 mr-sm-2" id="start_date"
+                placeholder="Enter Start Date" name="start_date"
+                [ngClass]="{ 'is-invalid': submitted && formField.start_date.errors }">
+              <div *ngIf="submitted && formField.start_date.errors" class="invalid-feedback">
+                <div *ngIf="formField.start_date.errors.required">Start date is required</div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="col-md-4">
-        <div class="row">
-          <div class="col-md-6">
-            <label for="end_date" class="mb-2 mr-sm-1" i18n="@@endDate3">End Date:</label>
-          </div>
-          <div class="col-md-6">
-            <input type="date" formControlName="end_date" class="form-control mb-2 mr-sm-2" id="end_date"
-              placeholder="Enter End Date" name="end_date"
-              [ngClass]="{ 'is-invalid': submitted && formField.end_date.errors }">
-            <div *ngIf="submitted && formField.end_date.errors" class="invalid-feedback">
-              <div *ngIf="formField.end_date.errors.required">End dateis required</div>
+        <div class="col-md-4">
+          <div class="row">
+            <div class="col-md-6">
+              <label for="end_date" class="mb-2 mr-sm-1" i18n="@@endDate3">End Date:</label>
+            </div>
+            <div class="col-md-6">
+              <input type="date" formControlName="end_date" class="form-control mb-2 mr-sm-2" id="end_date"
+                placeholder="Enter End Date" name="end_date"
+                [ngClass]="{ 'is-invalid': submitted && formField.end_date.errors }">
+              <div *ngIf="submitted && formField.end_date.errors" class="invalid-feedback">
+                <div *ngIf="formField.end_date.errors.required">End date is required</div>
+              </div>
             </div>
           </div>
+
         </div>
 
+        <div class="col-md-4"></div>
       </div>
 
-      <div class="col-md-4"></div>
-    </div>
+      <br />
 
-    <div class="row">
-      <div class="col-md-2">
-        <label for="userId" class="mb-2 mr-sm-1" i18n="@@userId3">User:</label>
-      </div>
-      <div class="col-md-5">
-        <input type="number" class="form-control mb-2 mr-sm-2" id="userId" placeholder="Enter User id" name="userId"
-          [ngClass]="{ 'is-invalid': submitted && formField.user_id.errors }">
-        <div *ngIf="submitted && formField.user_id.errors" class="invalid-feedback">
-          <div *ngIf="formField.user_id.errors.required">User id is required</div>
+      <div class="row">
+        <div class="col-md-2">
+          <label for="userId" class="mb-2 mr-sm-1" i18n="@@userId3">User:</label>
         </div>
+        <div class="col-md-5">
+          <input type="number" formControlName="user_id" class="form-control mb-2 mr-sm-2" id="userId"
+            placeholder="Enter User id" name="userId"
+            [ngClass]="{ 'is-invalid': submitted && formField.user_id.errors }">
+          <div *ngIf="submitted && formField.user_id.errors" class="invalid-feedback">
+            <div *ngIf="formField.user_id.errors.required">User id is required</div>
+          </div>
+        </div>
+
+        <div class="col-md-1">
+          <button type="button" [disabled]="checkboxValue" class="btn btn-secondary rounded-circle"
+            (click)="open(userContent)" i18n="@@addTask">Search</button>
+        </div>
+
+        <div class="col-md-4"></div>
       </div>
 
-      <div class="col-md-1">
-        <button type="button" class="btn btn-secondary rounded-circle" (click)="open(content)"
-          i18n="@@addTask">Search</button>
+      <br />
+
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-secondary" i18n="@@addTask">Add Task</button>
+        </div>
+        <div class="col-md-2">
+          <button type="button" (click)="resetTask()" class="btn btn-secondary" i18n="@@rest">Reset</button>
+        </div>
+        <div class="col-md-6"></div>
       </div>
 
-      <div class="col-md-4"></div>
+    </form>
+  </div>
+
+  <!--All the Modals-->
+  <div>
+    <ng-template #projectContent let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Project</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="dateOfBirth">Select a Project</label>
+            <div class="input-group">
+              <div *ngFor="let project of activeProjectList">
+                <br />
+                <input name="options" type="radio" [(ngModel)]="parentProject" [ngModelOptions]="{standalone: true}"
+                  value="{{project.project_id}}" (change)="modal.close(project)" /> {{project.project_name}}
+                <br />
+              </div>
+
+            </div>
+          </div>
+        </form>
+      </div>
+    </ng-template>
+  </div>
+  <div>
+      <ng-template #parentContent let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Parent</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="dateOfBirth">Select a Parent</label>
+              <div class="input-group">
+                <div *ngFor="let parent of parentTaskList">
+                  <br />
+                  <input name="options" type="radio" [(ngModel)]="parentTask" [ngModelOptions]="{standalone: true}"
+                    value="{{parent.parent_id}}" (change)="modal.close(parent)" /> {{parent.parent_task_name}}
+                  <br />
+                </div>
+  
+              </div>
+            </div>
+          </form>
+        </div>
+      </ng-template>
     </div>
-
-    <div class="row">
-      <div class="col-md-2"></div>
-      <div class="col-md-2">
-        <button type="submit" class="btn btn-secondary" i18n="@@addTask">Add Task</button>
+    <div>
+        <ng-template #userContent let-modal>
+          <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">User</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="dateOfBirth">Select a User</label>
+                <div class="input-group">
+                  <div *ngFor="let user of userList">
+                    <br />
+                    <input name="options" type="radio" [(ngModel)]="taskUser" [ngModelOptions]="{standalone: true}"
+                      value="{{user.user_id}}" (change)="modal.close(user)" /> {{user.first_name}} {{user.last_name}}
+                    <br />
+                  </div>
+    
+                </div>
+              </div>
+            </form>
+          </div>
+        </ng-template>
       </div>
-      <div class="col-md-2">
-        <button type="button" (click)="resetTask()" class="btn btn-secondary" i18n="@@rest">Reset</button>
-      </div>
-      <div class="col-md-6"></div>
-    </div>
-
-  </form>
 </div>
