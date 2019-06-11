@@ -60,6 +60,9 @@ export class ProjectComponent implements OnInit {
     this.findAllProjects();
   }
 
+  // convenience getter for easy access to form fields
+  get formField() { return this.addForm.controls; }
+  
   onSubmit() {
     this.submitted = true;
 

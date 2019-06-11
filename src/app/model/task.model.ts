@@ -8,4 +8,6 @@ export class Task {
     end_date: Date;
     status: String;
     parent_task: ParentTask;
+    project_id: number;
+    user_id: number;
 }

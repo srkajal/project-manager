@@ -20,6 +20,10 @@ export class AppConfig{
         return "/api/task/createTask"
     }
 
+    public static get addParentTaskUrl(): string{
+        return "/api/task/createParentTask"
+    }
+
     public static get updateTaskUrl(): string{
         return "/api/task/updateTask"
     }

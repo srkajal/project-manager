@@ -5,11 +5,11 @@ import { Task } from '../../model/task.model';
 import { TaskFilter } from '../../model/task-filter.model';
 
 @Component({
-  selector: 'app-task-list',
-  templateUrl: './task-list.component.html',
-  styleUrls: ['./task-list.component.css']
+  selector: 'view-task',
+  templateUrl: './view-task.component.html',
+  styleUrls: ['./view-task.component.css']
 })
-export class TaskListComponent implements OnInit {
+export class ViewTaskComponent implements OnInit {
   taskList: Array<Task> = [];
   filter: TaskFilter = new TaskFilter();
   
@@ -42,6 +42,6 @@ export class TaskListComponent implements OnInit {
     sessionStorage.removeItem("editTaskId");
     sessionStorage.setItem("editTaskId", taskId.toString());
     
-    this.router.navigate(['edit-task']);
+    this.router.navigate(['add-task']);
   }
 }
