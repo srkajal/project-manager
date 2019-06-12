@@ -62,17 +62,17 @@ export class ProjectComponent implements OnInit {
 
   // convenience getter for easy access to form fields
   get formField() { return this.addForm.controls; }
-  
+
   onSubmit() {
     this.submitted = true;
 
-    console.log("First: userID1 - "
+    /* console.log("First: userID1 - "
       + this.addForm.value.user_id
       + ", ProjectName - " + this.addForm.value.project_name
       + ", StartDate - " + this.addForm.value.start_date
       + ", EndDate - " + this.addForm.value.end_date
       + ", Prirority - " + this.addForm.value.priority
-    );
+    ); */
 
     // stop here if form is invalid
     if (this.addForm.invalid) {
@@ -169,7 +169,7 @@ export class ProjectComponent implements OnInit {
 
     this.addForm.setValue(this.projectRequest);
 
-    console.log("Check value for checkBox:" + this.addForm.value.user_id + "," + this.addForm.value.project_name + "," + this.addForm.value.start_date);
+    //console.log("Check value for checkBox:" + this.addForm.value.user_id + "," + this.addForm.value.project_name + "," + this.addForm.value.start_date);
   }
 
   private findAllProjects() {

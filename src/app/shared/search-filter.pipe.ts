@@ -11,21 +11,27 @@ export class SearchFilterPipe implements PipeTransform {
     OBJECT_TYPE = 'object';
 
     transform(values: object[], searchFilter: SearchFilter) {
-        if(!values || !searchFilter){
+
+        if (!values || !searchFilter) {
             return values;
         }
 
-        return values.filter(o=>this.applyFilter(o, searchFilter));
+        return values.filter(o => this.applyFilter(o, searchFilter));
     }
 
-    applyFilter(object: Object, filter: SearchFilter): boolean{
-        
-        for(let field in filter){
-            if(filter[field]){
-                if(typeof filter[field] === this.STRING_TYPE && typeof object[field] === this.STRING_TYPE){
-                    
+    applyFilter(object: Object, filter: SearchFilter): boolean {
+
+        for (let field in filter) {
+            if (filter[field]) {
+                if (typeof filter[field] === this.STRING_TYPE && typeof object[field] === this.STRING_TYPE) {
+
                     return object[field].toLowerCase().indexOf(filter[field].toLowerCase()) !== -1;
-                    
+
+                }
+                else if (typeof filter[field] === this.NUMBER_TYPE && typeof object[field] === this.NUMBER_TYPE) {
+
+                    return object[field] == filter[field];
+
                 }
             }
         }

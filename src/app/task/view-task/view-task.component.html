@@ -3,77 +3,57 @@
 
   <form>
     <div class="row">
-      <div class="col-md-2">
-        <label for="taskName" class="mb-2 mr-sm-2" i18n="@@taskName">Task:</label>
-      </div>
-      <div class="col-md-4">
-        <input type="text" [(ngModel)]="filter.task_name" class="form-control mb-2 mr-sm-2" id="taskName" placeholder="Enter task"
-          name="taskName">
-      </div>
-      <div class="col-md-2">
-        <label for="parentTaskName" class="mb-2 mr-sm-2" i18n="@@parentTaskName">Parent Task:</label>
-      </div>
-      <div class="col-md-4">
-        <input type="text" [(ngModel)]="filter.parent_task" class="form-control mb-2 mr-sm-1" id="parentTaskName" placeholder="Enter parent task"
-          name="parentTaskName">
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-2">
+      <div class="col-md-5">
         <div class="row">
-          <div class="col-md-6">
-            <label for="prirotyFrom" class="mb-2 mr-sm-1" i18n="@@prirotyFrom">Priroty From:</label>
-          </div>
-          <div class="col-md-6">
-            <input type="number" [(ngModel)]="filter.priority_from" class="form-control mb-2 mr-sm-1" id="prirotyFrom" name="prirotyFrom">
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-2">
-        <div class="row">
-          <div class="col-md-6">
-            <label for="prirotyTo" class="mb-2 mr-sm-1" i18n="@@prirotyTo">Priority To:</label>
-          </div>
-          <div class="col-md-6">
-            <input type="number" [(ngModel)]="filter.priority_to" class="form-control mb-2 mr-sm-1" id="prirotyTo" name="prirotyTo">
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="row">
+            <div class="col-md-4">
+                <label for="searchValue" class="mb-2 mr-sm-1" i18n="@@projectId3">Project:</label>
+              </div>
           <div class="col-md-4">
-            <label for="startDate" class="mb-2 mr-sm-2" i18n="@@startDate">Start Date:</label>
+            <input type="number" class="form-control mb-2 mr-sm-2" id="searchValue" 
+              [(ngModel)]="searchFilter.project_id" name="searchValue">
           </div>
-          <div class="col-md-8">
-            <input type="date" [(ngModel)]="filter.start_date" class="form-control mb-2 mr-sm-2" id="startDate" placeholder="Enter date"
-              name="startDate">
+          <div class="col-md-4">
+            <button type="button" class="btn btn-secondary rounded-circle" (click)="open(projectContent)"
+              i18n="@@addTask">Search</button>
           </div>
         </div>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-1">
+        <label i18n="@@project_id3">Sort Task By:</label>
+      </div>
+      <div class="col-md-6">
         <div class="row">
-          <div class="col-md-4">
-            <label for="endDate" class="mb-2 mr-sm-2" i18n="@@endDate">End Date:</label>
+          <div class="col-md-3">
+            <button type="submit" (click)="sort('start_date')" class="btn btn-secondary" i18n="@@addTask">Start
+              Date</button>
           </div>
-          <div class="col-md-8">
-            <input type="date" [(ngModel)]="filter.end_date" class="form-control mb-2 mr-sm-2" id="endDate" placeholder="Enter date"
-              name="endDate">
+          <div class="col-md-3">
+            <button type="submit" (click)="sort('end_date')" class="btn btn-secondary" i18n="@@addTask">End
+              Date</button>
+          </div>
+          <div class="col-md-3">
+            <button type="submit" (click)="sort('priority')" class="btn btn-secondary"
+              i18n="@@addTask">Priority</button>
+          </div>
+          <div class="col-md-3">
+            <button type="submit" (click)="sort('status')" class="btn btn-secondary" i18n="@@addTask">Completed</button>
           </div>
         </div>
+
       </div>
     </div>
 
 
     <div class="row">
       <div class="col">
-          <span layout="row"><hr flex/><hr flex/></span>
+        <span layout="row">
+          <hr flex />
+          <hr flex /></span>
       </div>
     </div>
 
-    <div *ngFor="let task of taskList | taskFilter: filter">
+    <div *ngFor="let task of taskList | sortBy:sortingName:isDesc | searchFilter: searchFilter">
       <div class="row">
         <div class="col-md-3">
           <h6 i18n="@@taskName2">Task</h6>
@@ -103,7 +83,8 @@
           <div class="rounded bg-secondary text-white">{{task.task_name}}</div>
         </div>
         <div class="col-md-2">
-          <div *ngIf="task.parent_task != null" class="rounded bg-secondary text-white">{{task.parent_task.parent_task_name}}</div>
+          <div *ngIf="task.parent_task != null" class="rounded bg-secondary text-white">
+            {{task.parent_task.parent_task_name}}</div>
         </div>
         <div class="col-md-1">
           {{task.priority}}
@@ -127,4 +108,32 @@
       </div>
     </div>
   </form>
+</div>
+
+<!--Modals-->
+<div>
+  <ng-template #projectContent let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Project</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group">
+          <label for="dateOfBirth">Select a Project</label>
+          <div class="input-group">
+            <div *ngFor="let project of projectList">
+              <br />
+              <input name="options" type="radio" [(ngModel)]="parentProject" [ngModelOptions]="{standalone: true}"
+                value="{{project.project_id}}" (change)="modal.close(project)" /> {{project.project_name}}
+              <br />
+            </div>
+
+          </div>
+        </div>
+      </form>
+    </div>
+  </ng-template>
 </div>

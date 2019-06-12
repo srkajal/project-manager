@@ -62,13 +62,14 @@ export class TaskAddComponent implements OnInit {
       start_date: ['', Validators.required],
       end_date: ['', Validators.required],
       parent_id: [0, Validators.min(0)],
-      user_id: [0, Validators.min(0)],
-      project_id: [0, Validators.min(0)]
+      user_id: [0],
+      project_id: [0],
+      task_id: [0]
     });
   }
 
   // convenience getter for easy access to form fields
-  get formField() { return this.addForm.controls; }
+  //get formField() { return this.addForm.controls; }
 
   onSubmit() {
     this.submitted = true;
@@ -81,11 +82,11 @@ export class TaskAddComponent implements OnInit {
 
     this.validation();
 
-    if(this.isErrorFound){
+    /* if (this.isErrorFound) {
       return;
-    }
+    } */
 
-    if(this.parentCheckbox) {
+    if (this.parentCheckbox) {
       let parentTask: ParentTask = new ParentTask();
       parentTask.parent_task_name = this.addForm.value.task_name;
       this.apiTaskService.addParentTask(parentTask).subscribe((data: any) => {
@@ -94,10 +95,20 @@ export class TaskAddComponent implements OnInit {
           this.errorMessages.push(data.error_message);
           return;
         }
-  
+
         this.router.navigate(['view-task']);
       });
 
+    } else if (this.addForm.value.task_id) {
+      this.apiTaskService.updateTask(this.addForm.value).subscribe((data: any) => {
+        if (data.error_message) {
+          this.isErrorFound = true;
+          this.errorMessages.push(data.error_message);
+          return;
+        }
+
+        this.router.navigate(['view-task']);
+      });
     } else {
       this.apiTaskService.addTask(this.addForm.value).subscribe((data: any) => {
         if (data.error_message) {
@@ -105,15 +116,15 @@ export class TaskAddComponent implements OnInit {
           this.errorMessages.push(data.error_message);
           return;
         }
-  
+
         this.router.navigate(['view-task']);
       });
     }
   }
 
   resetTask() {
-    
-    if(this.parentCheckbox) {
+
+    if (this.parentCheckbox) {
       this.toggle();
       this.parentCheckbox = false;
     }
@@ -167,6 +178,7 @@ export class TaskAddComponent implements OnInit {
     this.taksRequest.parent_id = this.addForm.value.parent_id;
     this.taksRequest.priority = this.addForm.value.priority
     this.taksRequest.user_id = this.addForm.value.user_id;
+    this.taksRequest.task_id = this.addForm.value.task_id;
 
     this.addForm.setValue(this.taksRequest);
   }
@@ -179,31 +191,38 @@ export class TaskAddComponent implements OnInit {
     this.taksRequest.parent_id = this.addForm.value.parent_id;
     this.taksRequest.priority = this.addForm.value.priority
     this.taksRequest.user_id = selectedUser.user_id;
+    this.taksRequest.task_id = this.addForm.value.task_id;
 
     this.addForm.setValue(this.taksRequest);
   }
 
   private setFormValueParentTaskId(selectedParentTask: ParentTask) {
+    if(!this.editTask){
+      this.taksRequest.user_id = this.addForm.value.user_id;
+      this.taksRequest.project_id = this.addForm.value.project_id;
+    }
+
     this.taksRequest.task_name = this.addForm.value.task_name;
     this.taksRequest.start_date = this.addForm.value.start_date;
     this.taksRequest.end_date = this.addForm.value.end_date;
-    this.taksRequest.project_id = this.addForm.value.project_id;
     this.taksRequest.parent_id = selectedParentTask.parent_id;
     this.taksRequest.priority = this.addForm.value.priority
-    this.taksRequest.user_id = this.addForm.value.user_id;
-
+    this.taksRequest.task_id = this.addForm.value.task_id;
+    
     this.addForm.setValue(this.taksRequest);
   }
 
-  private setFormValueEditTask(){
-    
+  private setFormValueEditTask() {
+
+    let ext_parent_id = this.existingTask.parent_task == null ? 0 : this.existingTask.parent_task.parent_id;
     this.taksRequest.task_name = this.existingTask.task_name;
     this.taksRequest.start_date = this.existingTask.start_date.toString();
     this.taksRequest.end_date = this.existingTask.end_date.toString();
     this.taksRequest.project_id = this.existingTask.project_id;
-    this.taksRequest.parent_id = this.existingTask.parent_task.parent_id;
+    this.taksRequest.parent_id = ext_parent_id;
     this.taksRequest.priority = this.existingTask.priority
     this.taksRequest.user_id = this.existingTask.user_id;
+    this.taksRequest.task_id = this.existingTask.task_id;
 
     this.addForm.setValue(this.taksRequest);
   }
@@ -235,14 +254,16 @@ export class TaskAddComponent implements OnInit {
     }
 
     if (!this.parentCheckbox) {
-      if (this.addForm.value.project_id == null || this.addForm.value.project_id == 0) {
-        this.isErrorFound = true;
-        this.errorMessages.push("Project id required");
-      }
+      if (!this.isEditTask) {
+        if (this.addForm.value.project_id == null || this.addForm.value.project_id == 0) {
+          this.isErrorFound = true;
+          this.errorMessages.push("Project id required");
+        }
 
-      if (this.addForm.value.parent_id == null || this.addForm.value.project_id == 0) {
-        this.isErrorFound = true;
-        this.errorMessages.push("Parent id required");
+        if (this.addForm.value.user_id == null || this.addForm.value.user_id == 0) {
+          this.isErrorFound = true;
+          this.errorMessages.push("User id required");
+        }
       }
 
       if (this.addForm.value.start_date == "") {
@@ -253,11 +274,6 @@ export class TaskAddComponent implements OnInit {
       if (this.addForm.value.end_date == "") {
         this.isErrorFound = true;
         this.errorMessages.push("End date required");
-      }
-
-      if (this.addForm.value.user_id == null || this.addForm.value.user_id == 0) {
-        this.isErrorFound = true;
-        this.errorMessages.push("User id required");
       }
 
       if (this.addForm.value.start_date != "" && this.addForm.value.end_date != "" && new Date(this.addForm.value.start_date).getTime() > new Date(this.addForm.value.end_date).getTime()) {

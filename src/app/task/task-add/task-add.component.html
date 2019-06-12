@@ -1,17 +1,17 @@
 <div class="container">
   <div>
     <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+        <input type="hidden" formControlName="task_id" id="taskId" value="" name="taskId">
       <div class="row">
         <div class="col-md-2">
-          <label for="projectId" class="mb-2 mr-sm-1" i18n="@@projectId3">Project</label>
+          <label for="projectId" class="mb-2 mr-sm-1" i18n="@@projectId3">Project:</label>
         </div>
         <div class="col-md-5">
           <input type="number" formControlName="project_id" class="form-control mb-2 mr-sm-2" id="project"
             placeholder="Enter Projec id" name="project">
         </div>
-
         <div class="col-md-1">
-          <button type="button" [disabled]="parentCheckbox" class="btn btn-secondary rounded-circle"
+          <button type="button" [disabled]="isEditTask || parentCheckbox" class="btn btn-secondary rounded-circle"
             (click)="open(projectContent)" i18n="@@addTask">Search</button>
         </div>
 
@@ -135,7 +135,7 @@
         </div>
 
         <div class="col-md-1">
-          <button type="button" [disabled]="parentCheckbox" class="btn btn-secondary rounded-circle"
+          <button type="button" [disabled]="isEditTask || parentCheckbox" class="btn btn-secondary rounded-circle"
             (click)="open(userContent)" i18n="@@addTask">Search</button>
         </div>
 
