@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AppConfig } from '../app.config';
+import { AppConfig } from '../shared/app.config';
 import { Project } from '../model/project.model';
 import { map } from 'rxjs/operators';
 import { ProjectRequest } from '../model/project-request.model';
@@ -16,6 +16,11 @@ export class ApiProjectService {
 
     getAllProjects() {
         return this.httpClient.get<Array<Project>>(this._baseUrl + AppConfig.findAllProjecstUrl)
+            .pipe(map((response: any) => response.projects));
+    }
+
+    getAllProjectsDetails() {
+        return this.httpClient.get<Array<Project>>(this._baseUrl + AppConfig.findAllProjectsDetailsUrl)
             .pipe(map((response: any) => response.projects));
     }
 

@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-import { AppConfig } from '../app.config';
+import { AppConfig } from '../shared/app.config';
 import { map } from 'rxjs/operators'
 import { UserRequest } from '../model/user-request.model';
 import { User } from '../model/user.model';
+
 
 @Injectable({
     providedIn: "root"

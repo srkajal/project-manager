@@ -10,6 +10,8 @@ import { ApiProjectService } from '../../service/api.project-service'
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { User } from '../../model/user.model';
 import { ApiUserService } from '../../service/api.user-service';
+import { AppConfig } from '../../shared/app.config';
+
 
 @Component({
   selector: 'app-task-add',
@@ -27,6 +29,7 @@ export class TaskAddComponent implements OnInit {
   activeProjectList: Array<Project> = [];
   userList: Array<User> = [];
   taksRequest: TaskRequest = new TaskRequest();
+
   parentProject: Project = new Project();
   parentTask: ParentTask = new ParentTask();
   taskUser: User = new User();
@@ -82,9 +85,9 @@ export class TaskAddComponent implements OnInit {
 
     this.validation();
 
-    /* if (this.isErrorFound) {
+    if (this.isErrorFound) {
       return;
-    } */
+    }
 
     if (this.parentCheckbox) {
       let parentTask: ParentTask = new ParentTask();
@@ -158,11 +161,11 @@ export class TaskAddComponent implements OnInit {
       //console.log("ProjectId:" + response['project_name'] + "," + response['first_name'] + "," + response['parent_task_name']);
 
       if (response['project_name']) {
-        this.setFormValueProjectId(response);
+        this.setFormValue(response, 'project_id');
       } else if (response['first_name']) {
-        this.setFormValueUserId(response);
+        this.setFormValue(response, 'user_id');
       } else if (response['parent_task_name']) {
-        this.setFormValueParentTaskId(response);
+        this.setFormValue(response, 'parent_id');
       }
       this.closeResult = `Closed with: ${response}`;
     }, (reason) => {
@@ -170,45 +173,16 @@ export class TaskAddComponent implements OnInit {
     });
   }
 
-  private setFormValueProjectId(selectedProject: Project) {
-    this.taksRequest.task_name = this.addForm.value.task_name;
-    this.taksRequest.start_date = this.addForm.value.start_date;
-    this.taksRequest.end_date = this.addForm.value.end_date;
-    this.taksRequest.project_id = selectedProject.project_id;
-    this.taksRequest.parent_id = this.addForm.value.parent_id;
-    this.taksRequest.priority = this.addForm.value.priority
-    this.taksRequest.user_id = this.addForm.value.user_id;
-    this.taksRequest.task_id = this.addForm.value.task_id;
-
-    this.addForm.setValue(this.taksRequest);
-  }
-
-  private setFormValueUserId(selectedUser: User) {
-    this.taksRequest.task_name = this.addForm.value.task_name;
-    this.taksRequest.start_date = this.addForm.value.start_date;
-    this.taksRequest.end_date = this.addForm.value.end_date;
-    this.taksRequest.project_id = this.addForm.value.project_id;
-    this.taksRequest.parent_id = this.addForm.value.parent_id;
-    this.taksRequest.priority = this.addForm.value.priority
-    this.taksRequest.user_id = selectedUser.user_id;
-    this.taksRequest.task_id = this.addForm.value.task_id;
-
-    this.addForm.setValue(this.taksRequest);
-  }
-
-  private setFormValueParentTaskId(selectedParentTask: ParentTask) {
-    if(!this.editTask){
-      this.taksRequest.user_id = this.addForm.value.user_id;
-      this.taksRequest.project_id = this.addForm.value.project_id;
+  private setFormValue(selectedProject: Project, selectedFieldName: string) {
+    for (var field of AppConfig.taskFields) {
+      if (field != selectedFieldName) {
+        this.taksRequest[field] = this.addForm.get(field).value;
+      } else {
+        this.taksRequest[field] = selectedProject[field];
+      }
+      //console.log("TaskRequest["+ filed+"]"+ this.addForm.get(filed).value+ ";" + this.taksRequest[filed]);
     }
 
-    this.taksRequest.task_name = this.addForm.value.task_name;
-    this.taksRequest.start_date = this.addForm.value.start_date;
-    this.taksRequest.end_date = this.addForm.value.end_date;
-    this.taksRequest.parent_id = selectedParentTask.parent_id;
-    this.taksRequest.priority = this.addForm.value.priority
-    this.taksRequest.task_id = this.addForm.value.task_id;
-    
     this.addForm.setValue(this.taksRequest);
   }
 

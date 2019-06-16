@@ -173,7 +173,7 @@ export class ProjectComponent implements OnInit {
   }
 
   private findAllProjects() {
-    this.apiProjectService.getAllProjects().subscribe(data => this.projectList = data);
+    this.apiProjectService.getAllProjectsDetails().subscribe(data => this.projectList = data);
   }
 
   private findAllUsersWithNoProject() {
