@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { SearchFilter } from '../model/search-filter.model';
 import { Project } from '../model/project.model';
 import { ApiProjectService } from '../service/api.project-service';
@@ -18,13 +18,12 @@ export class ProjectComponent implements OnInit {
   addForm: FormGroup;
   searchFilter: SearchFilter = new SearchFilter();
   projectList: Array<Project> = [];
-  projectRequest: ProjectRequest = new ProjectRequest();
-  existingProject: Project = new Project();
+  closeResult: string;
   userList: Array<User> = [];
-  manager: User = new User();
+  manager: User = new User(1);
+  managerId: number;
   sortingName: string;
   isDesc: boolean;
-  closeResult: string;
   submitted = false;
   isEditProject = false;
   isErrorFound = false;
@@ -39,22 +38,22 @@ export class ProjectComponent implements OnInit {
 
     if (projectEditId) {
       this.apiProjectService.getProjectById(Number(projectEditId)).subscribe(data => {
-        this.existingProject = data;
+        //this.existingProject = data;
 
         sessionStorage.removeItem("projectEditId");
         this.isEditProject = true;
 
-        this.setFormValueEditProject();
+        this.setFormValueEditProject(data);
       });
     }
 
     this.addForm = this.formBuilder.group({
-      project_id: ['', Validators.min(0)],
-      project_name: ['', Validators.required],
-      start_date: ['', Validators.required],
-      end_date: ['', Validators.required],
-      priority: ['', Validators.min(1)],
-      user_id: ['', Validators.min(0)]
+      project_id: new FormControl('', Validators.min(0)),
+      project_name: new FormControl('', Validators.required),
+      start_date: new FormControl('', Validators.required),
+      end_date: new FormControl('', Validators.required),
+      priority: new FormControl(''),
+      user_id: new FormControl('', [Validators.required, Validators.pattern('^[1-9]+[0-9]*$')])
     });
 
     this.findAllProjects();
@@ -66,13 +65,13 @@ export class ProjectComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
 
-    /* console.log("First: userID1 - "
+    console.log("First: userID - "
       + this.addForm.value.user_id
       + ", ProjectName - " + this.addForm.value.project_name
       + ", StartDate - " + this.addForm.value.start_date
       + ", EndDate - " + this.addForm.value.end_date
       + ", Prirority - " + this.addForm.value.priority
-    ); */
+    );
 
     // stop here if form is invalid
     if (this.addForm.invalid) {
@@ -151,23 +150,19 @@ export class ProjectComponent implements OnInit {
   }
 
   setStartAndEndDate() {
+    let startDate = "";
+    let endDate = "";
+
     if (this.checkboxValue) {
       let nextDate = new Date();
       nextDate.setDate(nextDate.getDate() + 1);
 
-      this.projectRequest.start_date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-      this.projectRequest.end_date = this.datePipe.transform(nextDate, 'yyyy-MM-dd');
-    } else {
-      this.projectRequest.start_date = "";
-      this.projectRequest.end_date = "";
+      startDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+      endDate = this.datePipe.transform(nextDate, 'yyyy-MM-dd');
     }
 
-    this.projectRequest.project_id = this.addForm.value.project_id;
-    this.projectRequest.project_name = this.addForm.value.project_name;
-    this.projectRequest.priority = this.addForm.value.priority
-    this.projectRequest.user_id = this.addForm.value.user_id;
-
-    this.addForm.setValue(this.projectRequest);
+    this.addForm.patchValue({ 'start_date': startDate });
+    this.addForm.patchValue({ 'end_date': endDate });
 
     //console.log("Check value for checkBox:" + this.addForm.value.user_id + "," + this.addForm.value.project_name + "," + this.addForm.value.start_date);
   }
@@ -192,42 +187,47 @@ export class ProjectComponent implements OnInit {
   open(content: any) {
     this.findAllUsersWithNoProject();
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((user) => {
-      this.setFormValueUserId(user);
-      this.closeResult = `Closed with: ${user}`;
+
+      this.addForm.patchValue({ 'user_id': user.user_id });
+      console.log("UserId:" + user.user_id);
     }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      this.closeResult = `Dismissed`;
     });
   }
 
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
+  private setFormValueEditProject(existingProject: Project) {
+    let projectRequest: ProjectRequest = new ProjectRequest();
+
+    let props = Object.keys(projectRequest);
+
+    for(let prop of props){
+      if(prop.endsWith('date')){
+        projectRequest[prop] = existingProject[prop].toString();
+      } else {
+        projectRequest[prop] = existingProject[prop];
+      }
     }
+
+    this.addForm.setValue(projectRequest);
   }
 
-  private setFormValueUserId(selectedUser: User) {
-    this.projectRequest.start_date = this.addForm.value.start_date;
-    this.projectRequest.end_date = this.addForm.value.end_date;
-    this.projectRequest.project_id = this.addForm.value.project_id;
-    this.projectRequest.project_name = this.addForm.value.project_name;
-    this.projectRequest.priority = this.addForm.value.priority
-    this.projectRequest.user_id = selectedUser.user_id;
-
-    this.addForm.setValue(this.projectRequest);
+  get projectName(){
+    return this.addForm.get('project_name');
   }
 
-  private setFormValueEditProject() {
-    this.projectRequest.project_id = this.existingProject.project_id;
-    this.projectRequest.project_name = this.existingProject.project_name;
-    this.projectRequest.start_date = this.existingProject.start_date.toString();
-    this.projectRequest.end_date = this.existingProject.end_date.toString();
-    this.projectRequest.priority = this.existingProject.priority
-    this.projectRequest.user_id = this.existingProject.user_id;
+  get startDate(){
+    return this.addForm.get('start_date');
+  }
 
-    this.addForm.setValue(this.projectRequest);
+  get endDate(){
+    return this.addForm.get('end_date');
+  }
+
+  get priority(){
+    return this.addForm.get('priority');
+  }
+
+  get userId(){
+    return this.addForm.get('user_id');
   }
 }

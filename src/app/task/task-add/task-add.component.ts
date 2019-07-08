@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ApiTaskService } from '../../service/api.task-service';
 import { Router } from '@angular/router';
 import { Task } from '../../model/task.model';
@@ -11,6 +11,10 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { User } from '../../model/user.model';
 import { ApiUserService } from '../../service/api.user-service';
 
+const PROJECT_ID: string = 'project_id';
+const PARENT_ID: string = 'parent_id';
+const USER_ID: string = 'user_id';
+const DEFAULT_PRIORITY: number = 15;
 @Component({
   selector: 'app-task-add',
   templateUrl: './task-add.component.html',
@@ -26,7 +30,6 @@ export class TaskAddComponent implements OnInit {
   parentTaskList: Array<ParentTask> = [];
   activeProjectList: Array<Project> = [];
   userList: Array<User> = [];
-  taksRequest: TaskRequest = new TaskRequest();
   parentProject: Project = new Project();
   parentTask: ParentTask = new ParentTask();
   taskUser: User = new User();
@@ -35,7 +38,6 @@ export class TaskAddComponent implements OnInit {
   closeResult: string;
   isErrorFound: boolean = false;
   errorMessages: Array<string> = [];
-  existingTask: Task = new Task();
   isEditTask: boolean = false;
 
   ngOnInit() {
@@ -47,24 +49,21 @@ export class TaskAddComponent implements OnInit {
 
     if (editTaskId) {
       this.apiTaskService.getTaskById(Number(editTaskId)).subscribe(data => {
-        this.existingTask = data;
-
         sessionStorage.removeItem("editTaskId");
         this.isEditTask = true;
-
-        this.setFormValueEditTask();
+        this.setFormValueEditTask(data);
       });
     }
 
     this.addForm = this.formBuilder.group({
-      task_name: ['', Validators.required],
-      priority: ['', Validators.min(1)],
-      start_date: ['', Validators.required],
-      end_date: ['', Validators.required],
-      parent_id: [0, Validators.min(0)],
-      user_id: [0],
-      project_id: [0],
-      task_id: [0]
+      task_name: new FormControl('', Validators.required),
+      priority: new FormControl(15, Validators.min(1)),
+      start_date: new FormControl('', Validators.required),
+      end_date: new FormControl('', Validators.required),
+      parent_id: new FormControl('', Validators.pattern('^[1-9]+[0-9]*$')),
+      user_id: new FormControl('', [Validators.required, Validators.pattern('^[1-9]+[0-9]*$')]),
+      project_id: new FormControl('', [Validators.required, Validators.pattern('^[1-9]+[0-9]*$')]),
+      task_id: new FormControl(0)
     });
   }
 
@@ -77,7 +76,7 @@ export class TaskAddComponent implements OnInit {
     this.errorMessages = [];
 
     if (this.addForm.value.priority == "") {
-      this.addForm.value.priority = this.defaultPrirority;
+      this.addForm.value.priority = DEFAULT_PRIORITY;
     }
 
     this.validation();
@@ -87,8 +86,8 @@ export class TaskAddComponent implements OnInit {
     } */
 
     if (this.parentCheckbox) {
-      let parentTask: ParentTask = new ParentTask();
-      parentTask.parent_task_name = this.addForm.value.task_name;
+      let parentTask: ParentTask = new ParentTask(null, this.addForm.value.task_name);
+
       this.apiTaskService.addParentTask(parentTask).subscribe((data: any) => {
         if (data.error_message) {
           this.isErrorFound = true;
@@ -154,87 +153,39 @@ export class TaskAddComponent implements OnInit {
   }
 
   open(content: any) {
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((response) => {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((response:any) => {
       //console.log("ProjectId:" + response['project_name'] + "," + response['first_name'] + "," + response['parent_task_name']);
 
-      if (response['project_name']) {
-        this.setFormValueProjectId(response);
-      } else if (response['first_name']) {
-        this.setFormValueUserId(response);
-      } else if (response['parent_task_name']) {
-        this.setFormValueParentTaskId(response);
+      if (response[PROJECT_ID]) {
+        this.addForm.patchValue({ PROJECT_ID: response[PROJECT_ID] });
+      } else if (response[USER_ID]) {
+        this.addForm.patchValue({ USER_ID: response[USER_ID] });
+      } else if (response[PARENT_ID]) {
+        this.addForm.patchValue({ PARENT_ID: response[PARENT_ID] });
       }
-      this.closeResult = `Closed with: ${response}`;
     }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      this.closeResult = `Dismissed`;
     });
   }
 
-  private setFormValueProjectId(selectedProject: Project) {
-    this.taksRequest.task_name = this.addForm.value.task_name;
-    this.taksRequest.start_date = this.addForm.value.start_date;
-    this.taksRequest.end_date = this.addForm.value.end_date;
-    this.taksRequest.project_id = selectedProject.project_id;
-    this.taksRequest.parent_id = this.addForm.value.parent_id;
-    this.taksRequest.priority = this.addForm.value.priority
-    this.taksRequest.user_id = this.addForm.value.user_id;
-    this.taksRequest.task_id = this.addForm.value.task_id;
+  private setFormValueEditTask(taskToEdit: Task) {
 
-    this.addForm.setValue(this.taksRequest);
-  }
+    let taksRequest: TaskRequest = new TaskRequest();
 
-  private setFormValueUserId(selectedUser: User) {
-    this.taksRequest.task_name = this.addForm.value.task_name;
-    this.taksRequest.start_date = this.addForm.value.start_date;
-    this.taksRequest.end_date = this.addForm.value.end_date;
-    this.taksRequest.project_id = this.addForm.value.project_id;
-    this.taksRequest.parent_id = this.addForm.value.parent_id;
-    this.taksRequest.priority = this.addForm.value.priority
-    this.taksRequest.user_id = selectedUser.user_id;
-    this.taksRequest.task_id = this.addForm.value.task_id;
+    let props = Object.keys(taksRequest);
 
-    this.addForm.setValue(this.taksRequest);
-  }
-
-  private setFormValueParentTaskId(selectedParentTask: ParentTask) {
-    if(!this.editTask){
-      this.taksRequest.user_id = this.addForm.value.user_id;
-      this.taksRequest.project_id = this.addForm.value.project_id;
+    for (let prop of props) {
+      if (prop.endsWith('date')) {
+        taksRequest[prop] = taskToEdit[prop].toString();
+      } else if (prop.startsWith('parent_id')) {
+        let ext_parent_id = taskToEdit.parent_task == null ? 0 : taskToEdit.parent_task.parent_id;
+        taksRequest[prop] = ext_parent_id;
+      } else {
+        taksRequest[prop] = taskToEdit[prop];
+      }
     }
 
-    this.taksRequest.task_name = this.addForm.value.task_name;
-    this.taksRequest.start_date = this.addForm.value.start_date;
-    this.taksRequest.end_date = this.addForm.value.end_date;
-    this.taksRequest.parent_id = selectedParentTask.parent_id;
-    this.taksRequest.priority = this.addForm.value.priority
-    this.taksRequest.task_id = this.addForm.value.task_id;
-    
-    this.addForm.setValue(this.taksRequest);
-  }
-
-  private setFormValueEditTask() {
-
-    let ext_parent_id = this.existingTask.parent_task == null ? 0 : this.existingTask.parent_task.parent_id;
-    this.taksRequest.task_name = this.existingTask.task_name;
-    this.taksRequest.start_date = this.existingTask.start_date.toString();
-    this.taksRequest.end_date = this.existingTask.end_date.toString();
-    this.taksRequest.project_id = this.existingTask.project_id;
-    this.taksRequest.parent_id = ext_parent_id;
-    this.taksRequest.priority = this.existingTask.priority
-    this.taksRequest.user_id = this.existingTask.user_id;
-    this.taksRequest.task_id = this.existingTask.task_id;
-
-    this.addForm.setValue(this.taksRequest);
-  }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
+    this.addForm.setValue(taksRequest);
   }
 
   private disableField(controlerName: string) {
@@ -281,5 +232,29 @@ export class TaskAddComponent implements OnInit {
         this.errorMessages.push("Start date should be greater than end date");
       }
     }
+  }
+
+  get taskName(){
+    return this.addForm.get('task_name');
+  }
+
+  get projectId(){
+    return this.addForm.get('project_id');
+  }
+
+  get startDate(){
+    return this.addForm.get('start_date');
+  }
+
+  get endDate(){
+    return this.addForm.get('end_date');
+  }
+
+  get userId(){
+    return this.addForm.get('user_id');
+  }
+
+  get parentId(){
+    return this.addForm.get('parent_id');
   }
 }

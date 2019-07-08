@@ -10,9 +10,9 @@
         <div class="col-md-7">
           <input type="text" formControlName="project_name" class="form-control mb-2 mr-sm-2" id="projectName"
             placeholder="Enter Project Name" name="projectName"
-            [ngClass]="{ 'is-invalid': submitted && formField.project_name.errors }">
-          <div *ngIf="submitted && formField.project_name.errors" class="invalid-feedback">
-            <div *ngIf="formField.project_name.errors.required">Project name is required</div>
+            [ngClass]="{ 'is-invalid': (projectName.touched || submitted) && projectName.errors }">
+          <div *ngIf="(projectName.touched || submitted) && projectName.errors" class="invalid-feedback">
+            <span *ngIf="projectName.errors.required">Project name is required</span>
           </div>
         </div>
         <div class="col-md-3"></div>
@@ -31,17 +31,18 @@
         <div class="col-md-3">
           <input type="date" formControlName="start_date" class="form-control mb-2 mr-sm-2" id="start_date"
             placeholder="Start Date" name="start_date"
-            [ngClass]="{ 'is-invalid': submitted && formField.start_date.errors }">
-          <div *ngIf="submitted && formField.start_date.errors" class="invalid-feedback">
-            <div *ngIf="formField.start_date.errors.required">Start dateis required</div>
+            [ngClass]="{ 'is-invalid': (startDate.touched || submitted) && startDate.errors }">
+          <div *ngIf="(startDate.touched || submitted) && startDate.errors" class="invalid-feedback">
+            <span *ngIf="startDate.errors.required">Start date is required</span>
           </div>
         </div>
 
         <div class="col-md-3">
-          <input type="date" formControlName="end_date" class="form-control mb-2 mr-sm-2" id="end_date"
-            placeholder="End Date" name="end_date" [ngClass]="{ 'is-invalid': submitted && formField.end_date.errors }">
-          <div *ngIf="submitted && formField.end_date.errors" class="invalid-feedback">
-            <div *ngIf="formField.end_date.errors.required">End dateis required</div>
+          <input type="date" formControlName="end_date" class="form-control mb-2 mr-sm-2" 
+          id="end_date" placeholder="End Date" name="end_date" 
+            [ngClass]="{ 'is-invalid': (endDate.touched || submitted) && endDate.errors }">
+          <div *ngIf="(endDate.touched || submitted) && endDate.errors" class="invalid-feedback">
+            <span *ngIf="endDate.errors.required">End date is required</span>
           </div>
         </div>
 
@@ -77,11 +78,16 @@
           <label for="projectId" i18n="@@project_id3">Manager:</label>
         </div>
         <div class="col-md-3">
-          <input type="number" formControlName="user_id" class="form-control mb-2 mr-sm-2" id="managerName"
-            placeholder="Enter Manager name" name="managerName"
-            [ngClass]="{ 'is-invalid': submitted && formField.user_id.errors }">
-          <div *ngIf="submitted && formField.user_id.errors" class="invalid-feedback">
-            <div *ngIf="formField.user_id.errors.required">Manager name is required</div>
+          <input type="text" formControlName="user_id" class="form-control mb-2 mr-sm-2" id="managerId"
+            placeholder="Enter Manager name" name="managerId"
+            [ngClass]="{ 'is-invalid': (userId.touched || submitted) && userId.errors }">
+            
+          <div *ngIf="(userId.touched || submitted) && userId.errors" class="invalid-feedback">
+            <span *ngIf="userId.errors.required">Manager Id is required</span>
+          </div>
+
+          <div *ngIf="(userId.touched || submitted) && userId.errors" class="invalid-feedback">
+            <span *ngIf="userId.errors.pattern">Manger Id should be a number greater than 0</span>
           </div>
         </div>
         <div class="col-md-4">
@@ -133,8 +139,7 @@
             <div class="input-group">
               <div *ngFor="let user of userList">
                 <br />
-                <input name="options" type="radio" [(ngModel)]="manager" [ngModelOptions]="{standalone: true}"
-                  value="{{user.user_id}}" (change)="modal.close(user)" /> {{user.first_name}} {{user.last_name}}
+                <input name="options" type="radio" (change)="modal.close(user)" /> {{user.first_name}} {{user.last_name}}
                 <br />
               </div>
 

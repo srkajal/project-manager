@@ -1,14 +1,23 @@
 <div class="container">
   <div>
     <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
-        <input type="hidden" formControlName="task_id" id="taskId" value="" name="taskId">
+      <input type="hidden" formControlName="task_id" id="taskId" value="" name="taskId">
       <div class="row">
         <div class="col-md-2">
           <label for="projectId" class="mb-2 mr-sm-1" i18n="@@projectId3">Project:</label>
         </div>
         <div class="col-md-5">
-          <input type="number" formControlName="project_id" class="form-control mb-2 mr-sm-2" id="project"
-            placeholder="Enter Projec id" name="project">
+          <input type="text" formControlName="project_id" class="form-control mb-2 mr-sm-2" id="project"
+            placeholder="Enter Projec id" name="project"
+            [ngClass]="{ 'is-invalid': (projectId.touched || submitted ) && projectId.errors }">
+
+          <div *ngIf="(projectId.touched || submitted ) && projectId.errors" class="invalid-feedback">
+            <div *ngIf="projectId.errors.required">Project Id is required</div>
+          </div>
+
+          <div *ngIf="(projectId.touched || submitted) && projectId.errors" class="invalid-feedback">
+            <span *ngIf="projectId.errors.pattern">Project Id should be a number greater than 0</span>
+          </div>
         </div>
         <div class="col-md-1">
           <button type="button" [disabled]="isEditTask || parentCheckbox" class="btn btn-secondary rounded-circle"
@@ -26,7 +35,12 @@
         </div>
         <div class="col-md-6">
           <input type="text" formControlName="task_name" class="form-control mb-2 mr-sm-2" id="taskName"
-            placeholder="Enter task" name="taskName">
+            placeholder="Enter task" name="taskName"
+            [ngClass]="{ 'is-invalid': (taskName.touched || submitted ) && taskName.errors }">
+
+          <div *ngIf="(taskName.touched || submitted ) && taskName.errors" class="invalid-feedback">
+            <div *ngIf="taskName.errors.required">Task name is required</div>
+          </div>
         </div>
         <div class="col-md-4"></div>
       </div>
@@ -64,8 +78,13 @@
           <label for="parentTaskId" class="mb-2 mr-sm-1" i18n="@@parentTaskId3">Parent Task:</label>
         </div>
         <div class="col-md-5">
-          <input type="number" formControlName="parent_id" class="form-control mb-2 mr-sm-2" id="parentTaskId"
-            placeholder="Enter Parent Task id" name="parentTaskId">
+          <input type="text" formControlName="parent_id" class="form-control mb-2 mr-sm-2" id="parentTaskId"
+            placeholder="Enter Parent Task id" name="parentTaskId"
+            [ngClass]="{ 'is-invalid': (parentId.touched || submitted ) && parentId.errors }">
+
+            <div *ngIf="(parentId.touched || submitted) && parentId.errors" class="invalid-feedback">
+              <span *ngIf="parentId.errors.pattern">User Id should be a number greater than 0</span>
+            </div>
         </div>
 
         <div class="col-md-1">
@@ -85,7 +104,7 @@
             <label class="form-check-label">
               <input type="checkbox" class="form-check-input" [(ngModel)]="parentCheckbox" [checked]="parentCheckbox"
                 [ngModelOptions]="{standalone: true}" (change)="toggle()" name="checkParentTask"
-                id="checkParentTask">Parent Task
+                id="checkParentTask"> Parent Task
             </label>
           </div>
         </div>
@@ -102,7 +121,12 @@
             </div>
             <div class="col-md-6">
               <input type="date" formControlName="start_date" class="form-control mb-2 mr-sm-2" id="start_date"
-                placeholder="Enter Start Date" name="start_date">
+                placeholder="Enter Start Date" name="start_date"
+                [ngClass]="{ 'is-invalid': (startDate.touched || submitted ) && startDate.errors }">
+
+              <div *ngIf="(startDate.touched || submitted ) && startDate.errors" class="invalid-feedback">
+                <div *ngIf="startDate.errors.required">Start date is required</div>
+              </div>
             </div>
           </div>
         </div>
@@ -114,7 +138,12 @@
             </div>
             <div class="col-md-6">
               <input type="date" formControlName="end_date" class="form-control mb-2 mr-sm-2" id="end_date"
-                placeholder="Enter End Date" name="end_date">
+                placeholder="Enter End Date" name="end_date"
+                [ngClass]="{ 'is-invalid': (endDate.touched || submitted ) && endDate.errors }">
+
+              <div *ngIf="(endDate.touched || submitted ) && endDate.errors" class="invalid-feedback">
+                <div *ngIf="endDate.errors.required">End date is required</div>
+              </div>
             </div>
           </div>
 
@@ -130,8 +159,17 @@
           <label for="userId" class="mb-2 mr-sm-1" i18n="@@userId3">User:</label>
         </div>
         <div class="col-md-5">
-          <input type="number" formControlName="user_id" class="form-control mb-2 mr-sm-2" id="userId"
-            placeholder="Enter User id" name="userId">
+          <input type="text" formControlName="user_id" class="form-control mb-2 mr-sm-2" id="userId"
+            placeholder="Enter User id" name="userId"
+            [ngClass]="{ 'is-invalid': (userId.touched || submitted ) && userId.errors }">
+
+              <div *ngIf="(userId.touched || submitted ) && userId.errors" class="invalid-feedback">
+                <div *ngIf="userId.errors.required">User Id is required</div>
+              </div>
+
+              <div *ngIf="(userId.touched || submitted) && userId.errors" class="invalid-feedback">
+                <span *ngIf="userId.errors.pattern">User Id should be a number greater than 0</span>
+              </div>
         </div>
 
         <div class="col-md-1">
@@ -158,12 +196,12 @@
         <div class="col-md-2"></div>
         <div class="col-md-2">
           <div *ngIf="!isEditTask">
-              <button type="submit" class="btn btn-secondary" i18n="@@addTask">Add Task</button>
+            <button type="submit" class="btn btn-secondary" i18n="@@addTask">Add Task</button>
           </div>
           <div *ngIf="isEditTask">
-              <button type="submit" class="btn btn-secondary" i18n="@@addTask">Update Task</button>
+            <button type="submit" class="btn btn-secondary" i18n="@@addTask">Update Task</button>
           </div>
-          
+
         </div>
         <div class="col-md-2">
           <button type="button" (click)="resetTask()" class="btn btn-secondary" i18n="@@rest">Reset</button>
@@ -190,8 +228,8 @@
             <div class="input-group">
               <div *ngFor="let project of activeProjectList">
                 <br />
-                <input name="options" type="radio" [(ngModel)]="parentProject" [ngModelOptions]="{standalone: true}"
-                  value="{{project.project_id}}" (change)="modal.close(project)" /> {{project.project_name}}
+                <input name="options" type="radio" value="{{project.project_id}}" (change)="modal.close(project)" />
+                {{project.project_name}}
                 <br />
               </div>
 
@@ -201,6 +239,7 @@
       </div>
     </ng-template>
   </div>
+
   <div>
     <ng-template #parentContent let-modal>
       <div class="modal-header">
@@ -216,8 +255,8 @@
             <div class="input-group">
               <div *ngFor="let parent of parentTaskList">
                 <br />
-                <input name="options" type="radio" [(ngModel)]="parentTask" [ngModelOptions]="{standalone: true}"
-                  value="{{parent.parent_id}}" (change)="modal.close(parent)" /> {{parent.parent_task_name}}
+                <input name="options" type="radio" value="{{parent.parent_id}}" (change)="modal.close(parent)" />
+                {{parent.parent_task_name}}
                 <br />
               </div>
 
@@ -227,6 +266,7 @@
       </div>
     </ng-template>
   </div>
+
   <div>
     <ng-template #userContent let-modal>
       <div class="modal-header">
@@ -242,11 +282,10 @@
             <div class="input-group">
               <div *ngFor="let user of userList">
                 <br />
-                <input name="options" type="radio" [(ngModel)]="taskUser" [ngModelOptions]="{standalone: true}"
-                  value="{{user.user_id}}" (change)="modal.close(user)" /> {{user.first_name}} {{user.last_name}}
+                <input name="options" type="radio" value="{{user.user_id}}" (change)="modal.close(user)" />
+                {{user.first_name}} {{user.last_name}}
                 <br />
               </div>
-
             </div>
           </div>
         </form>
