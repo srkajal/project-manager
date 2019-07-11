@@ -156,14 +156,14 @@ export class TaskAddComponent implements OnInit {
 
   open(content: any) {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((response: any) => {
-      //console.log("ProjectId:" + response['project_name'] + "," + response['first_name'] + "," + response['parent_task_name']);
+      console.log("ProjectId:" + response[PROJECT_ID] + "," + response['first_name'] + "," + response['parent_task_name']);
 
       if (response[PROJECT_ID]) {
-        this.addForm.patchValue({ PROJECT_ID: response[PROJECT_ID] });
+        this.addForm.patchValue({ 'project_id': response[PROJECT_ID] });
       } else if (response[USER_ID]) {
-        this.addForm.patchValue({ USER_ID: response[USER_ID] });
+        this.addForm.patchValue({ 'user_id': response[USER_ID] });
       } else if (response[PARENT_ID]) {
-        this.addForm.patchValue({ PARENT_ID: response[PARENT_ID] });
+        this.addForm.patchValue({ 'parent_id': response[PARENT_ID] });
       }
     }, (reason) => {
       this.closeResult = `Dismissed`;
