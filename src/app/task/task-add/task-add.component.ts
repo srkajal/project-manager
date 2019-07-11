@@ -10,6 +10,8 @@ import { ApiProjectService } from '../../service/api.project-service'
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { User } from '../../model/user.model';
 import { ApiUserService } from '../../service/api.user-service';
+import { AppConfig } from '../../shared/app.config';
+
 
 const PROJECT_ID: string = 'project_id';
 const PARENT_ID: string = 'parent_id';
@@ -81,9 +83,9 @@ export class TaskAddComponent implements OnInit {
 
     this.validation();
 
-    /* if (this.isErrorFound) {
+    if (this.isErrorFound) {
       return;
-    } */
+    }
 
     if (this.parentCheckbox) {
       let parentTask: ParentTask = new ParentTask(null, this.addForm.value.task_name);
@@ -153,7 +155,7 @@ export class TaskAddComponent implements OnInit {
   }
 
   open(content: any) {
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((response:any) => {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((response: any) => {
       //console.log("ProjectId:" + response['project_name'] + "," + response['first_name'] + "," + response['parent_task_name']);
 
       if (response[PROJECT_ID]) {
@@ -234,27 +236,27 @@ export class TaskAddComponent implements OnInit {
     }
   }
 
-  get taskName(){
+  get taskName() {
     return this.addForm.get('task_name');
   }
 
-  get projectId(){
+  get projectId() {
     return this.addForm.get('project_id');
   }
 
-  get startDate(){
+  get startDate() {
     return this.addForm.get('start_date');
   }
 
-  get endDate(){
+  get endDate() {
     return this.addForm.get('end_date');
   }
 
-  get userId(){
+  get userId() {
     return this.addForm.get('user_id');
   }
 
-  get parentId(){
+  get parentId() {
     return this.addForm.get('parent_id');
   }
 }

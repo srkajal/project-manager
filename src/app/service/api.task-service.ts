@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { TaskRequest } from '../model/task-request.model';
-import { AppConfig } from '../app.config';
+import { AppConfig } from '../shared/app.config';
 import { ParentTask } from '../model/parent-task.model';
 import { map } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'

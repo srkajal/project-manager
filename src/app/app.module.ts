@@ -7,7 +7,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ViewTaskComponent } from './task/view-task/view-task.component'
 import { TaskAddComponent } from './task/task-add/task-add.component';
-import { TaskFilterPipe } from './shared/task-filter.pipe';
 import { UserComponent } from './user/user.component';
 import { SortByPipe } from './shared/sort-by.pipe';
 import { SearchFilterPipe } from './shared/search-filter.pipe';
@@ -19,7 +18,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     AppComponent,
     ViewTaskComponent,
     TaskAddComponent,
-    TaskFilterPipe,
     UserComponent,
     SortByPipe,
     SearchFilterPipe,

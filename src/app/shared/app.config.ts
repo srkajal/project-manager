@@ -1,4 +1,10 @@
+const taskProperties: Array<string> = ['task_id', 'task_name', 'priority', 'start_date', 'end_date', 'parent_id', 'project_id', 'user_id'];
 export class AppConfig{
+
+    public static get taskFields(): Array<string>{
+        return taskProperties;
+    }
+
     public static get baseUrl(): string{
         return "http://localhost:8686"
     }
@@ -65,6 +71,11 @@ export class AppConfig{
     public static get findAllProjecstUrl(): string{
         return "/api/project/findAllProjects"
     }
+
+    public static get findAllProjectsDetailsUrl(): string{
+        return "/api/project/findAllProjectsDetails"
+    }
+    //findAllProjectsDetails
 
     public static get findAllActiveProjectUrl(): string{
         return "/api/project/findAllActiveProjects"
