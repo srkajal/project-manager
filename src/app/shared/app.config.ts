@@ -1,8 +1,8 @@
-const taskProperties: Array<string> = ['task_id', 'task_name', 'priority', 'start_date', 'end_date', 'parent_id', 'project_id', 'user_id'];
+
 export class AppConfig{
 
-    public static get taskFields(): Array<string>{
-        return taskProperties;
+    public static get idRegExp(): RegExp{
+        return /^[1-9]+[0-9]*$/;
     }
 
     public static get baseUrl(): string{

@@ -11,12 +11,13 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { User } from '../../model/user.model';
 import { ApiUserService } from '../../service/api.user-service';
 import { AppConfig } from '../../shared/app.config';
+import { idValidator } from 'src/app/validators/id-validator';
+import { fieldValidator } from 'src/app/validators/field-validator';
 
 
 const PROJECT_ID: string = 'project_id';
 const PARENT_ID: string = 'parent_id';
 const USER_ID: string = 'user_id';
-const DEFAULT_PRIORITY: number = 15;
 @Component({
   selector: 'app-task-add',
   templateUrl: './task-add.component.html',
@@ -27,8 +28,6 @@ export class TaskAddComponent implements OnInit {
   constructor(private apiTaskService: ApiTaskService, private apiProjectService: ApiProjectService, private apiUserService: ApiUserService, private formBuilder: FormBuilder, private modalService: NgbModal, private router: Router) { }
 
   addForm: FormGroup;
-  defaultPrirority: number = 15;
-  editTask: Task;
   parentTaskList: Array<ParentTask> = [];
   activeProjectList: Array<Project> = [];
   userList: Array<User> = [];
@@ -59,33 +58,33 @@ export class TaskAddComponent implements OnInit {
 
     this.addForm = this.formBuilder.group({
       task_name: new FormControl('', Validators.required),
-      priority: new FormControl(15, Validators.min(1)),
-      start_date: new FormControl('', Validators.required),
-      end_date: new FormControl('', Validators.required),
-      parent_id: new FormControl('', Validators.pattern('^[1-9]+[0-9]*$')),
-      user_id: new FormControl('', [Validators.required, Validators.pattern('^[1-9]+[0-9]*$')]),
-      project_id: new FormControl('', [Validators.required, Validators.pattern('^[1-9]+[0-9]*$')]),
+      priority: new FormControl(15),
+      start_date: new FormControl('', fieldValidator(!this.parentCheckbox)),
+      end_date: new FormControl('', fieldValidator(!this.parentCheckbox)),
+      parent_id: new FormControl('', idValidator(!this.parentCheckbox)),
+      user_id: new FormControl('', idValidator(!this.parentCheckbox && !this.isEditTask)),
+      project_id: new FormControl('', idValidator(!this.parentCheckbox && !this.isEditTask)),
       task_id: new FormControl(0)
     });
   }
-
-  // convenience getter for easy access to form fields
-  //get formField() { return this.addForm.controls; }
 
   onSubmit() {
     this.submitted = true;
     this.isErrorFound = false;
     this.errorMessages = [];
 
-    if (this.addForm.value.priority == "") {
-      this.addForm.value.priority = DEFAULT_PRIORITY;
+    //console.log('Prirority:' + this.addForm.value.priority);
+    //console.log(this.addForm);
+
+    if (this.addForm.invalid) {
+      return;
     }
 
     this.validation();
 
-    if (this.isErrorFound) {
+    /* if (this.isErrorFound) {
       return;
-    }
+    } */
 
     if (this.parentCheckbox) {
       let parentTask: ParentTask = new ParentTask(null, this.addForm.value.task_name);
@@ -199,40 +198,11 @@ export class TaskAddComponent implements OnInit {
     this.apiProjectService.getAllActiveProjects().subscribe(response => this.activeProjectList = response);
   }
 
-  private validation(): void {
-
-    if (this.addForm.value.task_name == "") {
+  private validation() {
+    if (!this.parentCheckbox && new Date(this.addForm.value.start_date).getTime() > new Date(this.addForm.value.end_date).getTime()) {
       this.isErrorFound = true;
-      this.errorMessages.push("Task name required");
-    }
-
-    if (!this.parentCheckbox) {
-      if (!this.isEditTask) {
-        if (this.addForm.value.project_id == null || this.addForm.value.project_id == 0) {
-          this.isErrorFound = true;
-          this.errorMessages.push("Project id required");
-        }
-
-        if (this.addForm.value.user_id == null || this.addForm.value.user_id == 0) {
-          this.isErrorFound = true;
-          this.errorMessages.push("User id required");
-        }
-      }
-
-      if (this.addForm.value.start_date == "") {
-        this.isErrorFound = true;
-        this.errorMessages.push("Start date required");
-      }
-
-      if (this.addForm.value.end_date == "") {
-        this.isErrorFound = true;
-        this.errorMessages.push("End date required");
-      }
-
-      if (this.addForm.value.start_date != "" && this.addForm.value.end_date != "" && new Date(this.addForm.value.start_date).getTime() > new Date(this.addForm.value.end_date).getTime()) {
-        this.isErrorFound = true;
-        this.errorMessages.push("Start date should be greater than end date");
-      }
+      this.errorMessages.push("Start date should be greater than end date");
+      return;
     }
   }
 

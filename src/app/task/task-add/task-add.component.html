@@ -8,7 +8,7 @@
         </div>
         <div class="col-md-5">
           <input type="text" formControlName="project_id" class="form-control mb-2 mr-sm-2" id="project"
-            placeholder="Enter Projec id" name="project"
+            placeholder="Enter Projec id" name="project" readonly=true
             [ngClass]="{ 'is-invalid': (projectId.touched || submitted ) && projectId.errors }">
 
           <div *ngIf="(projectId.touched || submitted ) && projectId.errors" class="invalid-feedback">
@@ -16,7 +16,7 @@
           </div>
 
           <div *ngIf="(projectId.touched || submitted) && projectId.errors" class="invalid-feedback">
-            <span *ngIf="projectId.errors.pattern">Project Id should be a number greater than 0</span>
+            <span *ngIf="projectId.errors.invalidNumber">Project Id should be a number greater than 0</span>
           </div>
         </div>
         <div class="col-md-1">
@@ -79,11 +79,11 @@
         </div>
         <div class="col-md-5">
           <input type="text" formControlName="parent_id" class="form-control mb-2 mr-sm-2" id="parentTaskId"
-            placeholder="Enter Parent Task id" name="parentTaskId"
+            placeholder="Enter Parent Task id" name="parentTaskId" readonly=true
             [ngClass]="{ 'is-invalid': (parentId.touched || submitted ) && parentId.errors }">
 
             <div *ngIf="(parentId.touched || submitted) && parentId.errors" class="invalid-feedback">
-              <span *ngIf="parentId.errors.pattern">User Id should be a number greater than 0</span>
+              <span *ngIf="parentId.errors.invalidNumber">Parent Id should be a number greater than 0</span>
             </div>
         </div>
 
@@ -160,7 +160,7 @@
         </div>
         <div class="col-md-5">
           <input type="text" formControlName="user_id" class="form-control mb-2 mr-sm-2" id="userId"
-            placeholder="Enter User id" name="userId"
+            placeholder="Enter User id" name="userId" readonly=true
             [ngClass]="{ 'is-invalid': (userId.touched || submitted ) && userId.errors }">
 
               <div *ngIf="(userId.touched || submitted ) && userId.errors" class="invalid-feedback">
@@ -168,7 +168,7 @@
               </div>
 
               <div *ngIf="(userId.touched || submitted) && userId.errors" class="invalid-feedback">
-                <span *ngIf="userId.errors.pattern">User Id should be a number greater than 0</span>
+                <span *ngIf="userId.errors.invalidNumber">User Id should be a number greater than 0</span>
               </div>
         </div>
 
